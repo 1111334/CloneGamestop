@@ -1,6 +1,7 @@
 package com.example.CloneGamestop.Constants;
 
-public enum Role {
+// Da anallizzare meglio
+/*public enum Role {
     Cliente,
     Amministratore
-}
+}*/

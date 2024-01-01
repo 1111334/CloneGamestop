@@ -2,6 +2,9 @@ package com.example.CloneGamestop.Model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "product") // garantisce una corrispondenza diretta e chiara tra un'entità Java e una tabella specifica
 public class Product {
@@ -22,6 +25,12 @@ public class Product {
     @ManyToOne //molti prodotti per un carrello
     @JoinColumn(name = "id_cart") // l'annotazione @JoinColumn specifica la colonna nel database (name = "id_user") che viene utilizzata per la relazione.
     private Cart cart;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<User> users = new HashSet<>();
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Order> orders = new HashSet<>();
 
 
     public Cart getCart() {
@@ -70,5 +79,21 @@ public class Product {
 
     public void setQuantityAvailable(int quantityAvailable) {
         this.quantityAvailable = quantityAvailable;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }
