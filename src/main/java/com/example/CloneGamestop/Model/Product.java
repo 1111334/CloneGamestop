@@ -1,5 +1,6 @@
 package com.example.CloneGamestop.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class Product {
     }
 
     @ManyToOne //molti prodotti per un carrello
-    @JoinColumn(name = "id_cart") // l'annotazione @JoinColumn specifica la colonna nel database (name = "id_user") che viene utilizzata per la relazione.
+    @JoinColumn(name = "id_cart") // l'annotazione @JoinColumn specifica la colonna nel database (name = "id_cart") che viene utilizzata per la relazione.
     private Cart cart;
 
     @ManyToMany(mappedBy = "products")
