@@ -1,14 +1,14 @@
 package com.example.CloneGamestop.Service;
 
-import com.example.CloneGamestop.Model.Cart;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Repository.CartRepository;
 import com.example.CloneGamestop.Repository.UserRepository;
-import jakarta.transaction.Transactional;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,19 +20,48 @@ public class UserService {
     private CartRepository cartRepository;
 
     public User users(User user) {
-       return userRepository.save(user);
+        return userRepository.save(user);
+    } // salva l'user appena creato
+
+    public List<User> viewAllUser() {
+        return userRepository.findAll();
     }
 
-    //@Transactional
-    //public void associateCartWithUser(Long idUser, Long idCart) {
-    //    User user = userRepository.findById(idUser)
-    //            .orElseThrow(() -> new RuntimeException("User not found with ID: " + idUser));
+    public Optional<User> viewUserByIdUser(Long idUser) {
+        if (userRepository.findById(idUser).isPresent()) {
+            return userRepository.findById(idUser);
+        }else {
+            return Optional.empty();
+        }
+    }
 
-    //    Cart cart = cartRepository.findById(idCart)
-    //            .orElseThrow(() -> new RuntimeException("Cart not found with ID: " + idCart));
+    public User updateUser(Long idUser, User updateUser) throws Exception {
 
-    //    user.setCart(cart);
-    //    userRepository.save(user);
+        if (userRepository.findById(idUser).isPresent()) {
 
-    //}
+            User user = userRepository.findById(idUser).get();
+
+            if (Objects.nonNull(updateUser.getUsername())) {
+                user.setUsername(updateUser.getUsername());
+            }
+
+            if (Objects.nonNull(updateUser.getPassword())) {
+                user.setUsername(updateUser.getPassword());
+            }
+
+            if (Objects.nonNull(updateUser.getEmail())) {
+                user.setUsername(updateUser.getEmail());
+            }
+
+            return userRepository.save(user);
+        } else {
+            throw new Exception(String.format("User with ID %s not found", idUser));
+        }
+    }
+
+    public User deletedUser(Long idUser) {
+        User user = userRepository.findById(idUser).get();
+        userRepository.delete(user);
+        return user;
+    }
 }

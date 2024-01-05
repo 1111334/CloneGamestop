@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrderController {
 
-    @Autowired
+    @Autowired //Utilizza il servizio OrderService per eseguire operazioni relative agli ordini.
     private OrderService orderService;
 
-    @PostMapping("/order-create")
+    @PostMapping("/order-create") //crea un ordine
     public ResponseEntity Order(@RequestBody Order order) {
-        try {
+        try { //Il metodo order() del servizio salva l'ordine. Se riuscito, ritorna HTTP 200 OK con l'ordine creato.
             return ResponseEntity.ok(orderService.orderCreate(order));
-        }catch (Exception e) {
+        }catch (Exception e) { //In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PostMapping("/order/{idUser}")
+    @PostMapping("/order/{idUser}") //crea un ordine
     public ResponseEntity orderByUserId(@PathVariable Long idUser, @RequestBody Order order) {
-
-        try {
+        try {// Restituisce una risposta HTTP 200 dopo aver creato un ordine per l'ID utente specificato utilizzando OrderService.
             return ResponseEntity.ok(orderService.orderCreateByUserId(idUser, order));
-        }catch (Exception e) {
+        }catch (Exception e) { // se non funzionante manda un messaggio di errore Http 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 }

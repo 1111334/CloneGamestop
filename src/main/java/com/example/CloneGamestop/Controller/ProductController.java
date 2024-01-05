@@ -16,47 +16,49 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/create-product")
+    @PostMapping("/create-product") //crea un prodotto
     public ResponseEntity Product(@RequestBody Product product) {
-        try {
+        try { // se è tutto ok Http 200 ritorna il prodotto creato
             return ResponseEntity.ok(productService.productCreate(product));
-        }catch (Exception e) {
+        }catch (Exception e) { // altrimenti errore Http 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PostMapping("/create-product/{idOrder}")
-    public ResponseEntity ProductByOrderId(@PathVariable Long idOrder, @RequestBody Product product) {
+    @PostMapping("create-product/{idOrder}/{idUser}")
+    public ResponseEntity ProductByOrderIdAndByUserId(@PathVariable Long idOrder,
+                                                      @PathVariable Long idUser,
+                                                      @RequestBody Product product) {
         try {
-            return ResponseEntity.ok(productService.productCreateByOrderId(idOrder, product));
+            return ResponseEntity.ok(productService.productCreateByOrderIdAndByUserId(idOrder, idUser, product));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PostMapping("/product/{idUser}")
-    public ResponseEntity ProductByUserId(@PathVariable Long idUser, @RequestBody Product product) {
-        try {
-            return ResponseEntity.ok(productService.productCreateByUserId(idUser,product));
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    //@PostMapping("/product-create/{idCart}")
-    //public ResponseEntity<?> createProductByCartId(@PathVariable Long idCart, @RequestBody Product product) {
-    //    try {
-    //        Product createdProduct = productService.createProductAndAdd(idCart, product);
-    //        return ResponseEntity.ok(createdProduct);
-    //    } catch (Exception e) {
-    //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    //    }
-    //}
-
-    @PostMapping("/add-to-cart/{idProduct}/{idCart}")
+    @PostMapping("/add-to-cart/{idProduct}/{idCart}") //Aggiunge un prodotto a un carrello specificato per ID.
     public ResponseEntity addProductToCartById(@PathVariable Long idProduct, @PathVariable Long idCart) {
-        try {
+        try { //Se riuscito, ritorna una risposta HTTP 200 OK.
             return ResponseEntity.ok(productService.addProductToCart(idProduct, idCart));
+        }catch (Exception e) { //altrimenti errore Http 400
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    //CREARE UN DTO SIA PER RISOLVERE IL PROBLEMA DELLA INFINITY RECURSION E SIA PER VEDERE SOLO QUELLO CHE MENZIONO
+    @GetMapping("/view-all-product")
+    public ResponseEntity viewAllProduct() {
+        try {
+            return ResponseEntity.ok(productService.viewListProduct());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/view-product/{idProduct}")
+    public ResponseEntity viewProductById(@PathVariable Long idProduct) {
+        try {
+            return ResponseEntity.ok(productService.viewProductByidProduct(idProduct));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
