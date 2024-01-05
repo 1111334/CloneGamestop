@@ -9,7 +9,6 @@ public class CloneGamestopApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CloneGamestopApplication.class, args);
-
 	}
 
 }
