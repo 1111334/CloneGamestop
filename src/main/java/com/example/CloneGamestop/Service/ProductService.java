@@ -11,6 +11,8 @@ import com.example.CloneGamestop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.OptionalDataException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,43 +33,41 @@ public class ProductService {
 
 
     public Product productCreate(Product product) {
-        return productRepository.save(product);
+        return productRepository.save(product); //salva il prodotto creato
     }
 
-    public Product productCreateByOrderId(Long idOrder, Product product) {
+
+    //public Product productCreateByOrderId(Long idOrder, Product product) {
+    //    Order order = orderRepository.findById(idOrder).get(); //Crea un nuovo prodotto e lo associa a un ordine specificato per ID.
+    //    order.getProductSet().add(product); //Aggiunge il prodotto al set di prodotti dell'ordine e lo salva nel repository.
+    //    return productRepository.save(product);
+    //}
+
+    //public Product productCreateByUserId(Long idUser, Product product) {
+    //    User user = userRepository.findById(idUser).get(); //Crea un nuovo prodotto e lo associa a uno user specificato per ID.
+    //    user.getProducts().add(product); //Aggiunge il prodotto alla lista dei prodotti dell'utente
+    //    return productRepository.save(product); //e lo salva nel repository dei prodotti.
+    //}
+
+    public Product productCreateByOrderIdAndByUserId(Long idOrder, Long idUser, Product product) {
         Order order = orderRepository.findById(idOrder).get();
         order.getProductSet().add(product);
-        return productRepository.save(product);
-    }
 
-    public Product productCreateByUserId(Long idUser, Product product) {
         User user = userRepository.findById(idUser).get();
         user.getProducts().add(product);
+
         return productRepository.save(product);
     }
-
-    //@Transactional
-    //public Product createProductAndAdd(Long idCart, Product product) throws Exception {
-    //    Optional<Cart> optionalCart = cartRepository.findById(idCart);
-    //    if (optionalCart.isPresent()) {
-    //        Cart cart = optionalCart.get();
-    //        cart.getProducts().add(product);
-    //        product.setCart(cart);
-    //        return productRepository.save(product);
-    //    } else {
-    //        throw new Exception("Cart with ID " + idCart + " not found");
-    //    }
-    //}
 
     public Product addProductToCart(Long idProduct, Long idCart) {
         // Recupera il prodotto dal database utilizzando l'ID
         Optional<Product> optionalProduct = productRepository.findById(idProduct);
-        if (optionalProduct.isPresent()) {
+        if (optionalProduct.isPresent()) { //controlla se esista o meno il prodotto
             Product product = optionalProduct.get();
 
             // Recupera il carrello dal database utilizzando l'ID
             Optional<Cart> optionalCart = cartRepository.findById(idCart);
-            if (optionalCart.isPresent()) {
+            if (optionalCart.isPresent()) { //controlla se esista o meno il carrello
                 Cart cart = optionalCart.get();
 
                 // Associa il prodotto al carrello
@@ -79,12 +79,20 @@ public class ProductService {
                 cartRepository.save(cart);
 
                 return product;
-            } else {
+            } else { // Lancia un'eccezione con un messaggio specifico se il carrello o il prodotto non sono trovati per l'ID fornito.
                 throw new RuntimeException("Cart not found with ID: " + idCart);
             }
         } else {
             throw new RuntimeException("Product not found with ID: " + idProduct);
         }
-
     }
+
+    public List<Product> viewListProduct() {
+        return productRepository.findAll();
+    }
+
+    public Optional<Product> viewProductByidProduct(Long idProduct) {
+        return productRepository.findById(idProduct);
+    }
+
 }

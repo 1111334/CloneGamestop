@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
 
+    //l'annotazione @Autowired evita la necessità di creare manualmente le istanze delle classi dipendenti,
+    // rendendo il codice più pulito e riducendo la dipendenza diretta tra le classi
     @Autowired
     private OrderRepository orderRepository;
 
@@ -22,14 +24,14 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
 
-    public Order orderCreate(Order order) {
-        return orderRepository.save(order);
+    public Order orderCreate(Order order) { //Crea un nuovo ordine utilizzando l'oggetto Order fornito come input.
+        return orderRepository.save(order); //salva l'ordine utilizzando il repository
     }
 
     public Order orderCreateByUserId(Long idUser, Order order){
-        User user = userRepository.findById(idUser).get();
-        user.getOrders().add(order);
-        return orderRepository.save(order);
+        User user = userRepository.findById(idUser).get(); //Trova e ottiene un utente dal repository basandosi sull'ID specificato.
+        user.getOrders().add(order); //Aggiunge l'ordine fornito alla lista degli ordini dell'utente
+        return orderRepository.save(order); //ed infine salva l'ordine
     }
 
 
