@@ -1,0 +1,61 @@
+Sviluppa un backend completo per un negozio online.
+Include autenticazione degli utenti, gestione dei prodotti,
+carrello della spesa e ordini.
+Tecnologie: Spring Boot, JPA/Hibernate, Spring Security, JWT per l'autenticazione.
+Punti di forza: Implementazione di relazioni complesse, gestione delle transazioni, sicurezza e autenticazione
+
+Traccia: Backend di un Negozio Online
+1. Inizializzazione del Progetto
+Crea un nuovo progetto Spring Boot usando Spring Initializr con le dipendenze necessarie (Spring Web, Spring Data JPA, Spring Security, ecc.).
+Configura un database (es. MySQL, PostgreSQL) e aggiungi la dipendenza necessaria nel pom.xml.
+2. Creazione delle Entità
+
+//FATTO//
+a. Utente:
+id, username, password (criptata), email, ruolo (cliente, amministratore).
+
+b. Prodotto:
+id, nome, descrizione, prezzo, quantità disponibile.
+
+c. Carrello:
+id, riferimento all'utente.
+
+d. VoceCarrello:
+id, riferimento al carrello, riferimento al prodotto, quantità.
+
+e. Ordine:
+id, riferimento all'utente, data, stato (es. in attesa, completato).
+
+f. DettagliOrdine:
+id, riferimento all'ordine, riferimento al prodotto, quantità.
+3. Relazioni tra Entità
+Un utente può avere un solo carrello.
+Un carrello può avere molte voci di carrello.
+Un ordine può avere molteplici dettagli di ordine.
+4. Configurazione JPA/Hibernate
+Implementa i repository JPA per ogni entità.
+Definisci le relazioni tra le entità usando le annotazioni di JPA (es. @OneToMany, @ManyToOne).
+5. Spring Security e JWT
+a. Configura Spring Security per gestire l'autenticazione e l'autorizzazione.
+b. Implementa un servizio di autenticazione per generare JWT quando un utente effettua il login e per verificare il JWT in ogni richiesta successiva.
+
+6. Endpoint API
+a. Autenticazione:
+
+Endpoint per la registrazione di nuovi utenti.
+Endpoint per il login che restituisce un JWT valido.
+b. Gestione dei Prodotti:
+
+Endpoint per aggiungere un nuovo prodotto.
+Endpoint per ottenere la lista dei prodotti disponibili.
+c. Carrello e Ordini:
+
+Endpoint per aggiungere prodotti al carrello di un utente.
+Endpoint per creare un nuovo ordine da un carrello.
+Endpoint per ottenere gli ordini di un utente.
+7. Test
+Utilizza Postman o un altro strumento per testare tutti gli endpoint.
+Assicurati che la sicurezza e l'autenticazione funzionino come previsto.
+8. Documentazione e Commenti
+Documenta gli endpoint, i modelli, i servizi e le configurazioni.
+Aggiungi commenti dettagliati nel codice per spiegare le parti più complesse o critiche del sistema.
