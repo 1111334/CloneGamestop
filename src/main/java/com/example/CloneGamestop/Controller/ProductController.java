@@ -1,14 +1,20 @@
 package com.example.CloneGamestop.Controller;
 
+import com.example.CloneGamestop.DTO.ProductDTO;
+import com.example.CloneGamestop.DTO.UserDTO;
 import com.example.CloneGamestop.Model.Cart;
 import com.example.CloneGamestop.Model.Order;
 import com.example.CloneGamestop.Model.Product;
+import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Service.ProductService;
 import jakarta.persistence.PostRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -45,22 +51,28 @@ public class ProductController {
         }
     }
 
-    //CREARE UN DTO SIA PER RISOLVERE IL PROBLEMA DELLA INFINITY RECURSION E SIA PER VEDERE SOLO QUELLO CHE MENZIONO
+
     @GetMapping("/view-all-product")
-    public ResponseEntity viewAllProduct() {
-        try {
-            return ResponseEntity.ok(productService.viewListProduct());
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<List<ProductDTO>> viewAllProduct() {
+       List<Product> productList = productService.viewListProduct();
+       List<ProductDTO> productDTOList = new ArrayList<>();
+       for (Product product : productList) {
+           productDTOList.add(ProductDTO.fromProduct(product));
+       }
+       return ResponseEntity.ok(productDTOList);
     }
 
-    @GetMapping("/view-product/{idProduct}")
-    public ResponseEntity viewProductById(@PathVariable Long idProduct) {
-        try {
-            return ResponseEntity.ok(productService.viewProductByidProduct(idProduct));
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    @GetMapping(value = "/api/product/{idProduct}")
+    public ResponseEntity<ProductDTO> getUserById(@PathVariable Long idProduct) {
+        Product product = productService.viewProductDTOById(idProduct);
+
+        if (product != null) {
+            // Se il prodotto è stato trovato, convertirlo in un DTO e restituirlo nella risposta
+            ProductDTO productDTO = ProductDTO.fromProduct(product);
+            return new ResponseEntity<>(productDTO, HttpStatus.OK);
+        } else {
+            // Se il prodotto non è stato trovato, restituire una risposta 404 Not Found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

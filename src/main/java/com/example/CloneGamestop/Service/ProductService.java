@@ -36,19 +36,6 @@ public class ProductService {
         return productRepository.save(product); //salva il prodotto creato
     }
 
-
-    //public Product productCreateByOrderId(Long idOrder, Product product) {
-    //    Order order = orderRepository.findById(idOrder).get(); //Crea un nuovo prodotto e lo associa a un ordine specificato per ID.
-    //    order.getProductSet().add(product); //Aggiunge il prodotto al set di prodotti dell'ordine e lo salva nel repository.
-    //    return productRepository.save(product);
-    //}
-
-    //public Product productCreateByUserId(Long idUser, Product product) {
-    //    User user = userRepository.findById(idUser).get(); //Crea un nuovo prodotto e lo associa a uno user specificato per ID.
-    //    user.getProducts().add(product); //Aggiunge il prodotto alla lista dei prodotti dell'utente
-    //    return productRepository.save(product); //e lo salva nel repository dei prodotti.
-    //}
-
     public Product productCreateByOrderIdAndByUserId(Long idOrder, Long idUser, Product product) {
         Order order = orderRepository.findById(idOrder).get();
         order.getProductSet().add(product);
@@ -91,8 +78,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<Product> viewProductByidProduct(Long idProduct) {
-        return productRepository.findById(idProduct);
+    public Product viewProductDTOById(Long idProduct) {
+        return productRepository.findById(idProduct).orElse(null);
     }
 
 }

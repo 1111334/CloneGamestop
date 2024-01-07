@@ -1,5 +1,6 @@
 package com.example.CloneGamestop.Service;
 
+import com.example.CloneGamestop.DTO.UserDTO;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Repository.CartRepository;
 import com.example.CloneGamestop.Repository.UserRepository;
@@ -23,16 +24,17 @@ public class UserService {
         return userRepository.save(user);
     } // salva l'user appena creato
 
-    public List<User> viewAllUser() {
-        return userRepository.findAll();
+    public User viewUserDTOById(Long idUser) {
+        return userRepository.findById(idUser).orElse(null);
     }
 
-    public Optional<User> viewUserByIdUser(Long idUser) {
-        if (userRepository.findById(idUser).isPresent()) {
-            return userRepository.findById(idUser);
-        }else {
-            return Optional.empty();
-        }
+    //METODO SERVICE STREAM
+    /*public List<User> viewAllUser() {
+    //    return userRepository.findAll();
+    }*/
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public User updateUser(Long idUser, User updateUser) throws Exception {
