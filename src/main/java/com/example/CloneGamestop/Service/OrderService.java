@@ -8,6 +8,7 @@ import com.example.CloneGamestop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -32,6 +33,14 @@ public class OrderService {
         User user = userRepository.findById(idUser).get(); //Trova e ottiene un utente dal repository basandosi sull'ID specificato.
         user.getOrders().add(order); //Aggiunge l'ordine fornito alla lista degli ordini dell'utente
         return orderRepository.save(order); //ed infine salva l'ordine
+    }
+
+    public List<Order> viewAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public Order viewOrderById(Long idOrder) {
+        return orderRepository.findById(idOrder).orElse(null);
     }
 
 

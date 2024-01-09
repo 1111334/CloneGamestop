@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -80,6 +81,34 @@ public class ProductService {
 
     public Product viewProductDTOById(Long idProduct) {
         return productRepository.findById(idProduct).orElse(null);
+    }
+
+    public Product updatedProduct(Long idProduct, Product updateProduct) throws Exception {
+
+        if (productRepository.findById(idProduct).isPresent()) {
+
+            Product product = productRepository.findById(idProduct).get();
+
+            if (Objects.nonNull(updateProduct.getName())) {
+                product.setName(updateProduct.getName());
+            }
+
+            if (Objects.nonNull(updateProduct.getDescription())) {
+                product.setDescription(updateProduct.getDescription());
+            }
+
+            if (Objects.nonNull(updateProduct.getPrice())) {
+                product.setPrice(updateProduct.getPrice());
+            }
+
+            if (Objects.nonNull(updateProduct.getQuantityAvailable())) {
+                product.setQuantityAvailable(updateProduct.getQuantityAvailable());
+            }
+
+            return productRepository.save(product);
+        } else {
+            throw new Exception(String.format("Product with ID %s not found", idProduct));
+        }
     }
 
 }

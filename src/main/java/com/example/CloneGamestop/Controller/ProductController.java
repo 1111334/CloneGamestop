@@ -71,6 +71,15 @@ public class ProductController {
         }
     }
 
+    @PutMapping(value = "/modify-product/{idProduct}")
+    public ResponseEntity modifyProductById(@PathVariable Long idProduct, @RequestBody Product product) {
+        try {
+            return ResponseEntity.ok(productService.updatedProduct(idProduct, product));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 
 
 

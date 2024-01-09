@@ -17,7 +17,7 @@ public class Order {
     private Long idOrder;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm") // formato della data
     private LocalDateTime dateOrder; // mappa la proprietà corrente dell'entità a una colonna
-    private boolean tutteLeAzioniCompletate;
+    private boolean allActionsCompleted;
     private String statusOrder;
 
     public Order() {
@@ -65,11 +65,11 @@ public class Order {
 
     //Da rivedere
     public boolean getTutteLeAzioniCompletate() {
-        return tutteLeAzioniCompletate;
+        return allActionsCompleted;
     }
 
-    public void setTutteLeAzioniCompletate(boolean tutteLeAzioniCompletate) {
-        this.tutteLeAzioniCompletate = tutteLeAzioniCompletate;
+    public void setTutteLeAzioniCompletate(boolean allActionsCompleted) {
+        this.allActionsCompleted = allActionsCompleted;
     }
 
     public Set<User> getUserSet() {
@@ -89,13 +89,15 @@ public class Order {
     }
 
     //Da rivedere
-    public void statusOrderIsCompleteOrNotComplete() {
-        if (tutteLeAzioniCompletate) {
+    public void  statusOrderIsCompleteOrNotComplete() {
+        if (allActionsCompleted) {
             this.statusOrder = "completato";
         } else {
             this.statusOrder = "in attesa";
         }
-
+        Order orders = new Order();
+        orders.statusOrderIsCompleteOrNotComplete();
     }
+
 }
 
