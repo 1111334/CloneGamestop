@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CartService {
@@ -42,7 +44,14 @@ public class CartService {
 
         cart.setUser(user); //Imposta l'utente nel carrello e lo salva nel repository.
         cartRepository.save(cart);
+    }
 
+    public List<Cart> viewListCart() {
+        return cartRepository.findAll();
+    }
+
+    public Cart viewCartDTOById(Long idCart) {
+        return cartRepository.findById(idCart).orElse(null);
     }
 
 

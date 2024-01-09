@@ -1,13 +1,8 @@
 package com.example.CloneGamestop.Controller;
 
 import com.example.CloneGamestop.DTO.ProductDTO;
-import com.example.CloneGamestop.DTO.UserDTO;
-import com.example.CloneGamestop.Model.Cart;
-import com.example.CloneGamestop.Model.Order;
 import com.example.CloneGamestop.Model.Product;
-import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Service.ProductService;
-import jakarta.persistence.PostRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +18,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/create-product") //crea un prodotto
-    public ResponseEntity Product(@RequestBody Product product) {
+    public ResponseEntity createProduct(@RequestBody Product product) {
         try { // se è tutto ok Http 200 ritorna il prodotto creato
             return ResponseEntity.ok(productService.productCreate(product));
         }catch (Exception e) { // altrimenti errore Http 400
