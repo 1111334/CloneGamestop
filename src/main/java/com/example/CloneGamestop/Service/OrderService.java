@@ -1,6 +1,7 @@
 package com.example.CloneGamestop.Service;
 
 import com.example.CloneGamestop.Model.Order;
+import com.example.CloneGamestop.Model.Product;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Repository.OrderRepository;
 import com.example.CloneGamestop.Repository.ProductRepository;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -42,6 +45,49 @@ public class OrderService {
     public Order viewOrderById(Long idOrder) {
         return orderRepository.findById(idOrder).orElse(null);
     }
+
+
+    public Order updateOrder(Long idOrder, Order updateOrder) throws Exception {
+
+        if (orderRepository.findById(idOrder).isPresent()) {
+
+            Order order = orderRepository.findById(idOrder).get();
+
+            if (Objects.nonNull(updateOrder.getStatusOrder())) {
+                order.setStatusOrder(updateOrder.getStatusOrder());
+            }
+
+            if (Objects.nonNull(updateOrder.getAllActionsCompleted())) {
+                order.setAllActionsCompleted(updateOrder.getAllActionsCompleted());
+            }
+
+            return orderRepository.save(order);
+        } else {
+            throw new Exception(String.format("User with ID %s not found", idOrder));
+        }
+    }
+    public void deleteOrderByIdOrder(Long idOrder) {
+        Optional<Order> optionalOrder = orderRepository.findById(idOrder);
+
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+
+            // Rimuovi l'ordine dalle associazioni con gli utenti nella tabella di join user_order
+            for (User user : order.getUserSet()) {
+                user.getOrders().remove(order);
+            }
+
+            // Rimuovi L'ordine dalle associazioni con i prodotti
+            for (Product product : order.getProductSet()) {
+                product.getOrders().remove(order);
+            }
+
+
+            // Infine, elimina effettivamente l'ordine
+            orderRepository.delete(order);
+        }
+    }
+
 
 
 }

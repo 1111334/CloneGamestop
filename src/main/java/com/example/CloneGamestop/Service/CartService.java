@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -52,6 +53,26 @@ public class CartService {
 
     public Cart viewCartDTOById(Long idCart) {
         return cartRepository.findById(idCart).orElse(null);
+    }
+
+    public Cart updateCart(Long idCart, Cart updateCart) throws Exception {
+
+        if (cartRepository.findById(idCart).isPresent()) {
+
+            Cart cart = cartRepository.findById(idCart).get();
+
+            if (Objects.nonNull(updateCart.getShippingAddress())) {
+                cart.setShippingAddress(updateCart.getShippingAddress());
+            }
+
+            return cartRepository.save(cart);
+        } else {
+            throw new Exception(String.format("User with ID %s not found", idCart));
+        }
+    }
+
+    public void deleteCartById(Long idCart) {
+        cartRepository.deleteById(idCart);
     }
 
 

@@ -69,6 +69,22 @@ public class CartController {
         }
     }
 
+    @PutMapping(value = "update-cart/{idCart}")
+    public ResponseEntity modifyCart(@PathVariable Long idCart, @RequestBody Cart cart) {
+        try {
+            return ResponseEntity.ok(cartService.updateCart(idCart, cart));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+
+    //Finire la richiesta delete di cart
+    @DeleteMapping(value = "/delete-cart/{idCart}")
+    public void deleteCart(@PathVariable Long idCart) {
+       cartService.deleteCartById(idCart);
+    }
+
 
 
 

@@ -31,7 +31,7 @@ public class Order {
     @ManyToMany(mappedBy = "orders") //un ordine per molti user
     private Set<User> userSet = new HashSet<>();
 
-    @ManyToMany // relazione; molti ordini per molti prodotti
+    @ManyToMany(cascade = CascadeType.ALL) // relazione; molti ordini per molti prodotti
     @JoinTable(
             name = "order_product", //nome della tabella di join
             joinColumns = @JoinColumn(name = "order_id"),  //nome della colonna che fa riferimento all'entità Order
@@ -64,11 +64,11 @@ public class Order {
     }
 
     //Da rivedere
-    public boolean getTutteLeAzioniCompletate() {
+    public boolean getAllActionsCompleted() {
         return allActionsCompleted;
     }
 
-    public void setTutteLeAzioniCompletate(boolean allActionsCompleted) {
+    public void setAllActionsCompleted (boolean allActionsCompleted) {
         this.allActionsCompleted = allActionsCompleted;
     }
 
@@ -89,7 +89,7 @@ public class Order {
     }
 
     //Da rivedere
-    public void  statusOrderIsCompleteOrNotComplete() {
+    public void statusOrderIsCompleteOrNotComplete() {
         if (allActionsCompleted) {
             this.statusOrder = "completato";
         } else {

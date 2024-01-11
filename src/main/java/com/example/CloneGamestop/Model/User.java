@@ -1,6 +1,5 @@
 package com.example.CloneGamestop.Model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -29,7 +28,6 @@ public class User {
 
     //Qualsiasi operazione di gestione della relazione (come l'aggiunta, la rimozione o la modifica della relazione) tra User e Carrello sarà gestita automaticamente in base alle operazioni eseguite sull'entità User.
 
-    @JsonManagedReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)  //indica il tipo di relazione tra le entità mappedBy = "user" indica che l'entità Cart contiene il mapping effettivo
     @JoinColumn(name = "id_user") //Specifica la colonna nel database che rappresenta la relazione tra entità tramite un ID utente.
     private Cart cart;
@@ -42,7 +40,7 @@ public class User {
     )
     private Set<Order> orders = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_product", // nome della tabella di join
             joinColumns = @JoinColumn(name = "user_id"),  // nome della colonna che fa riferimento all'entità User

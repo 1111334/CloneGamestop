@@ -59,4 +59,23 @@ public class OrderController {
         }
     }
 
+    @PutMapping(value = "/update-order/{idOrder}")
+    public ResponseEntity modifyOrder(@PathVariable Long idOrder, @RequestBody Order order) {
+        try {
+            return ResponseEntity.ok(orderService.updateOrder(idOrder, order));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping(value = "/delete-order/{idOrder}")
+    public ResponseEntity<String> deleteOrderById(@PathVariable Long idOrder) {
+        try {
+            orderService.deleteOrderByIdOrder(idOrder);
+            return ResponseEntity.ok("Product deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }

@@ -29,7 +29,7 @@ public class Product {
     @ManyToMany(mappedBy = "products") //molti prodotti per molti user
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(mappedBy = "products") //molti prodotti per molti ordini
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) //molti prodotti per molti ordini
     private Set<Order> orders = new HashSet<>();
 
 

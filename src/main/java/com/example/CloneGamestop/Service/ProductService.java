@@ -111,4 +111,32 @@ public class ProductService {
         }
     }
 
+    public void deleteProductByIdProduct(Long idProduct) {
+        Optional<Product> optionalProduct = productRepository.findById(idProduct);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+
+            // Rimuovi il prodotto dalle associazioni con gli utenti nella tabella di join user_product
+            for (User user : product.getUsers()) {
+                user.getProducts().remove(product);
+            }
+
+            // Rimuovi il prodotto dalle associazioni con gli ordini
+            for (Order order : product.getOrders()) {
+                order.getProductSet().remove(product);
+            }
+
+            // Rimuovi il prodotto dal carrello, se presente
+            if (product.getCart() != null) {
+                product.getCart().getProducts().remove(product);
+            }
+
+            // Infine, elimina effettivamente il prodotto
+            productRepository.delete(product);
+        }
+    }
+
+
+
 }
