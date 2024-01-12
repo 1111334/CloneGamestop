@@ -1,7 +1,6 @@
 package com.example.CloneGamestop.DTO;
 
 import com.example.CloneGamestop.Model.Product;
-import com.example.CloneGamestop.Model.User;
 
 public class ProductDTO {
 

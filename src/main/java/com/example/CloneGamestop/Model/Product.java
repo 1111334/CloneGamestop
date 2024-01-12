@@ -1,7 +1,6 @@
 package com.example.CloneGamestop.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -24,14 +23,15 @@ public class Product {
         
     }
 
-    @ManyToOne //molti prodotti per un carrello
+    @ManyToOne(cascade = CascadeType.ALL) //molti prodotti per un carrello
     @JoinColumn(name = "id_cart") // l'annotazione @JoinColumn specifica la colonna nel database (name = "id_cart") che viene utilizzata per la relazione.
+    @JsonBackReference
     private Cart cart;
 
-    @ManyToMany(mappedBy = "products") //molti prodotti per molti user
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) //molti prodotti per molti user
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(mappedBy = "products") //molti prodotti per molti ordini
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) //molti prodotti per molti ordini
     private Set<Order> orders = new HashSet<>();
 
 
