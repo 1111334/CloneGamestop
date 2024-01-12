@@ -35,16 +35,6 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/view-all-order")
-    public ResponseEntity<List<OrderDTO>> viewAllOrder() {
-        List<Order> orderList = orderService.viewAllOrders();
-        List<OrderDTO> orderDTOList = new ArrayList<>();
-        for (Order order : orderList) {
-            orderDTOList.add(OrderDTO.fromOrder(order));
-        }
-        return ResponseEntity.ok(orderDTOList);
-    }
-
     @GetMapping(value = "/api/order/{idOrder}")
     public ResponseEntity<OrderDTO> getUserById(@PathVariable Long idOrder) {
         Order order = orderService.viewOrderById(idOrder);
@@ -58,6 +48,18 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/view-all-order")
+    public ResponseEntity<List<OrderDTO>> viewAllOrder() {
+        List<Order> orderList = orderService.viewAllOrders();
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for (Order order : orderList) {
+            orderDTOList.add(OrderDTO.fromOrder(order));
+        }
+        return ResponseEntity.ok(orderDTOList);
+    }
+
+
 
     @PutMapping(value = "/update-order/{idOrder}")
     public ResponseEntity modifyOrder(@PathVariable Long idOrder, @RequestBody Order order) {

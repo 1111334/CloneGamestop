@@ -46,17 +46,6 @@ public class ProductController {
         }
     }
 
-
-    @GetMapping("/view-all-product")
-    public ResponseEntity<List<ProductDTO>> viewAllProduct() {
-        List<Product> productList = productService.viewListProduct();
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for (Product product : productList) {
-            productDTOList.add(ProductDTO.fromProduct(product));
-        }
-        return ResponseEntity.ok(productDTOList);
-    }
-
     @GetMapping(value = "/api/product/{idProduct}")
     public ResponseEntity<ProductDTO> getUserById(@PathVariable Long idProduct) {
         Product product = productService.viewProductDTOById(idProduct);
@@ -71,7 +60,17 @@ public class ProductController {
         }
     }
 
-    @PutMapping(value = "/modify-product/{idProduct}")
+    @GetMapping("/view-all-product")
+    public ResponseEntity<List<ProductDTO>> viewAllProduct() {
+        List<Product> productList = productService.viewListProduct();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (Product product : productList) {
+            productDTOList.add(ProductDTO.fromProduct(product));
+        }
+        return ResponseEntity.ok(productDTOList);
+    }
+
+    @PutMapping(value = "/update-product/{idProduct}")
     public ResponseEntity modifyProductById(@PathVariable Long idProduct, @RequestBody Product product) {
         try {
             return ResponseEntity.ok(productService.updatedProduct(idProduct, product));
@@ -80,6 +79,7 @@ public class ProductController {
         }
     }
 
+    //FUNZIONANTE AL 100%
     @DeleteMapping(value = "/delete-product/{idProduct}")
     public ResponseEntity<String> deleteProductById(@PathVariable Long idProduct) {
         try {

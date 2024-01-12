@@ -67,13 +67,13 @@ public class CartService {
 
             return cartRepository.save(cart);
         } else {
-            throw new Exception(String.format("User with ID %s not found", idCart));
+            throw new Exception(String.format("Cart with ID %s not found", idCart));
         }
     }
 
-    public void deleteCartById(Long idCart) {
-        cartRepository.deleteById(idCart);
-    }
+   public void deleteCartById(Long idCart) {
+        cartRepository.getReferenceById(idCart);
+   }
 
 
 }

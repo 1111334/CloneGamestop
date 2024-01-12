@@ -45,16 +45,6 @@ public class CartController {
         }
     }
 
-    @GetMapping("/view-all-cart")
-    public ResponseEntity<List<CartDTO>> viewAllCart() {
-        List<Cart> cartList = cartService.viewListCart();
-        List<CartDTO> cartDTOList = new ArrayList<>();
-        for (Cart cart : cartList) {
-            cartDTOList.add(CartDTO.fromCart(cart));
-        }
-        return ResponseEntity.ok(cartDTOList);
-    }
-
     @GetMapping(value = "/api/cart/{idCart}")
     public ResponseEntity<CartDTO> getUserById(@PathVariable Long idCart) {
         Cart cart = cartService.viewCartDTOById(idCart);
@@ -69,6 +59,18 @@ public class CartController {
         }
     }
 
+    @GetMapping("/view-all-cart")
+    public ResponseEntity<List<CartDTO>> viewAllCart() {
+        List<Cart> cartList = cartService.viewListCart();
+        List<CartDTO> cartDTOList = new ArrayList<>();
+        for (Cart cart : cartList) {
+            cartDTOList.add(CartDTO.fromCart(cart));
+        }
+        return ResponseEntity.ok(cartDTOList);
+    }
+
+
+
     @PutMapping(value = "update-cart/{idCart}")
     public ResponseEntity modifyCart(@PathVariable Long idCart, @RequestBody Cart cart) {
         try {
@@ -80,10 +82,27 @@ public class CartController {
 
 
     //Finire la richiesta delete di cart
+    /*@DeleteMapping(value = "/delete-cart/{idCart}")
+    public ResponseEntity deleteCart(@PathVariable Long idCart) {
+       try {
+           return ResponseEntity.ok(cartService.deleteCartById(idCart));
+       }catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+       }
+    }*/
+
     @DeleteMapping(value = "/delete-cart/{idCart}")
-    public void deleteCart(@PathVariable Long idCart) {
-       cartService.deleteCartById(idCart);
+    public ResponseEntity<String> deleteCart(@PathVariable Long idCart) {
+        try {
+            cartService.deleteCartById(idCart);
+            return ResponseEntity.ok("Il carrello è stato eliminato con successo.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Si è verificato un errore durante l'eliminazione del carrello.");
+        }
     }
+
+    //PROSSIMA VOLTA CREARE UN CARRELLO ASSOCIATO AD UNO USER COSI DA NON RISCONTRARE PROBLEMI NEL CANCELLARE UN CARRELLO
+
 
 
 
