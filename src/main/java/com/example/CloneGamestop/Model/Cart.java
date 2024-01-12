@@ -1,8 +1,6 @@
 package com.example.CloneGamestop.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -26,13 +24,12 @@ public class Cart {
         this.dateOfAddition = LocalDateTime.now();
     }
 
-    @JsonBackReference
-    @OneToOne //relazione: un carrello per user
+    @OneToOne(cascade = CascadeType.ALL) //relazione: un carrello per user
     @JoinColumn(name = "id_user",referencedColumnName = "id_user") // l'annotazione @JoinColumn specifica la colonna nel database (name = "id_user") che viene utilizzata per la relazione.
     private User user;
 
-    @OneToMany(mappedBy = "cart") //relazione: un carrello per molti prodotti
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL) //relazione: un carrello per molti prodotti
+    @JsonManagedReference
     private List<Product> products;
 
     public Cart() {

@@ -17,7 +17,7 @@ public class Order {
     private Long idOrder;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm") // formato della data
     private LocalDateTime dateOrder; // mappa la proprietà corrente dell'entità a una colonna
-    private boolean tutteLeAzioniCompletate;
+    private boolean allActionsCompleted;
     private String statusOrder;
 
     public Order() {
@@ -31,7 +31,7 @@ public class Order {
     @ManyToMany(mappedBy = "orders") //un ordine per molti user
     private Set<User> userSet = new HashSet<>();
 
-    @ManyToMany // relazione; molti ordini per molti prodotti
+    @ManyToMany(cascade = CascadeType.ALL) // relazione; molti ordini per molti prodotti
     @JoinTable(
             name = "order_product", //nome della tabella di join
             joinColumns = @JoinColumn(name = "order_id"),  //nome della colonna che fa riferimento all'entità Order
@@ -64,12 +64,12 @@ public class Order {
     }
 
     //Da rivedere
-    public boolean getTutteLeAzioniCompletate() {
-        return tutteLeAzioniCompletate;
+    public boolean getAllActionsCompleted() {
+        return allActionsCompleted;
     }
 
-    public void setTutteLeAzioniCompletate(boolean tutteLeAzioniCompletate) {
-        this.tutteLeAzioniCompletate = tutteLeAzioniCompletate;
+    public void setAllActionsCompleted (boolean allActionsCompleted) {
+        this.allActionsCompleted = allActionsCompleted;
     }
 
     public Set<User> getUserSet() {
@@ -90,12 +90,14 @@ public class Order {
 
     //Da rivedere
     public void statusOrderIsCompleteOrNotComplete() {
-        if (tutteLeAzioniCompletate) {
+        if (allActionsCompleted) {
             this.statusOrder = "completato";
         } else {
             this.statusOrder = "in attesa";
         }
-
+        Order orders = new Order();
+        orders.statusOrderIsCompleteOrNotComplete();
     }
+
 }
 

@@ -1,13 +1,8 @@
 package com.example.CloneGamestop.Controller;
 
 import com.example.CloneGamestop.DTO.ProductDTO;
-import com.example.CloneGamestop.DTO.UserDTO;
-import com.example.CloneGamestop.Model.Cart;
-import com.example.CloneGamestop.Model.Order;
 import com.example.CloneGamestop.Model.Product;
-import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Service.ProductService;
-import jakarta.persistence.PostRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +18,10 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/create-product") //crea un prodotto
-    public ResponseEntity Product(@RequestBody Product product) {
+    public ResponseEntity createProduct(@RequestBody Product product) {
         try { // se è tutto ok Http 200 ritorna il prodotto creato
             return ResponseEntity.ok(productService.productCreate(product));
-        }catch (Exception e) { // altrimenti errore Http 400
+        } catch (Exception e) { // altrimenti errore Http 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -37,7 +32,7 @@ public class ProductController {
                                                       @RequestBody Product product) {
         try {
             return ResponseEntity.ok(productService.productCreateByOrderIdAndByUserId(idOrder, idUser, product));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -46,20 +41,9 @@ public class ProductController {
     public ResponseEntity addProductToCartById(@PathVariable Long idProduct, @PathVariable Long idCart) {
         try { //Se riuscito, ritorna una risposta HTTP 200 OK.
             return ResponseEntity.ok(productService.addProductToCart(idProduct, idCart));
-        }catch (Exception e) { //altrimenti errore Http 400
+        } catch (Exception e) { //altrimenti errore Http 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-    }
-
-
-    @GetMapping("/view-all-product")
-    public ResponseEntity<List<ProductDTO>> viewAllProduct() {
-       List<Product> productList = productService.viewListProduct();
-       List<ProductDTO> productDTOList = new ArrayList<>();
-       for (Product product : productList) {
-           productDTOList.add(ProductDTO.fromProduct(product));
-       }
-       return ResponseEntity.ok(productDTOList);
     }
 
     @GetMapping(value = "/api/product/{idProduct}")
@@ -76,8 +60,35 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/view-all-product")
+    public ResponseEntity<List<ProductDTO>> viewAllProduct() {
+        List<Product> productList = productService.viewListProduct();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (Product product : productList) {
+            productDTOList.add(ProductDTO.fromProduct(product));
+        }
+        return ResponseEntity.ok(productDTOList);
+    }
 
+    @PutMapping(value = "/update-product/{idProduct}")
+    public ResponseEntity modifyProductById(@PathVariable Long idProduct, @RequestBody Product product) {
+        try {
+            return ResponseEntity.ok(productService.updatedProduct(idProduct, product));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
+    //FUNZIONANTE AL 100%
+    @DeleteMapping(value = "/delete-product/{idProduct}")
+    public ResponseEntity<String> deleteProductById(@PathVariable Long idProduct) {
+        try {
+            productService.deleteProductByIdProduct(idProduct);
+            return ResponseEntity.ok("Product deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
 
 }

@@ -11,8 +11,9 @@ import com.example.CloneGamestop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.OptionalDataException;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -81,5 +82,61 @@ public class ProductService {
     public Product viewProductDTOById(Long idProduct) {
         return productRepository.findById(idProduct).orElse(null);
     }
+
+    public Product updatedProduct(Long idProduct, Product updateProduct) throws Exception {
+
+        if (productRepository.findById(idProduct).isPresent()) {
+
+            Product product = productRepository.findById(idProduct).get();
+
+            if (Objects.nonNull(updateProduct.getName())) {
+                product.setName(updateProduct.getName());
+            }
+
+            if (Objects.nonNull(updateProduct.getDescription())) {
+                product.setDescription(updateProduct.getDescription());
+            }
+
+            if (Objects.nonNull(updateProduct.getPrice())) {
+                product.setPrice(updateProduct.getPrice());
+            }
+
+            if (Objects.nonNull(updateProduct.getQuantityAvailable())) {
+                product.setQuantityAvailable(updateProduct.getQuantityAvailable());
+            }
+
+            return productRepository.save(product);
+        } else {
+            throw new Exception(String.format("Product with ID %s not found", idProduct));
+        }
+    }
+
+    public void deleteProductByIdProduct(Long idProduct) {
+        Optional<Product> optionalProduct = productRepository.findById(idProduct);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+
+            // Rimuovi il prodotto dalle associazioni con gli utenti nella tabella di join user_product
+            for (User user : product.getUsers()) {
+                user.getProducts().remove(product);
+            }
+
+            // Rimuovi il prodotto dalle associazioni con gli ordini
+            for (Order order : product.getOrders()) {
+                order.getProductSet().remove(product);
+            }
+
+            // Rimuovi il prodotto dal carrello, se presente
+            if (product.getCart() != null) {
+                product.getCart().getProducts().remove(product);
+            }
+
+            // Infine, elimina effettivamente il prodotto
+            productRepository.delete(product);
+        }
+    }
+
+
 
 }
