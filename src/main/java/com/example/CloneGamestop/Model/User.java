@@ -1,5 +1,6 @@
 package com.example.CloneGamestop.Model;
 
+import com.example.CloneGamestop.TestController.Role;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -9,57 +10,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users") // garantisce una corrispondenza diretta e chiara tra un'entità Java e una tabella specifica
 public class User {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // genera id auto-incrementanti
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    //  mappa la proprietà corrente dell'entità a una colonna chiamata id_user nella tabella del database.
     private Long idUser;
     private String username;
     private String password;
     private String email;
-
-    // Da anallizzare meglio
-    // Aggiunta della proprietà per il ruolo
-   // @Enumerated(EnumType.STRING)
-    //@Column(name = "role")
-    //  mappa la proprietà corrente dell'entità a una colonna chiamata role nella tabella del database.
-   // private Role role;
-
-    //Qualsiasi operazione di gestione della relazione (come l'aggiunta, la rimozione o la modifica della relazione) tra User e Carrello sarà gestita automaticamente in base alle operazioni eseguite sull'entità User.
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)  //indica il tipo di relazione tra le entità mappedBy = "user" indica che l'entità Cart contiene il mapping effettivo
-    @JoinColumn(name = "id_user") //Specifica la colonna nel database che rappresenta la relazione tra entità tramite un ID utente.
-    private Cart cart;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_order",  // nome della tabella di join nel database
-            joinColumns = @JoinColumn(name = "user_id"),  // nome della colonna che fa riferimento all'entità User
-            inverseJoinColumns = @JoinColumn(name = "order_id")  // nome della colonna che fa riferimento all'entità Order
-    )
-    private Set<Order> orders = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_product", // nome della tabella di join
-            joinColumns = @JoinColumn(name = "user_id"),  // nome della colonna che fa riferimento all'entità User
-            inverseJoinColumns = @JoinColumn(name = "product_id")  // nome della colonna che fa riferimento all'entità Product
-    )
-    private Set<Product> products = new HashSet<>();
-
-    public User() {
-
-    }
-
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 
     public Long getIdUser() {
         return idUser;
@@ -93,14 +50,44 @@ public class User {
         this.email = email;
     }
 
-    // Da anallizzare meglio
-    /*public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    //public void setRole(Role role) {
-        this.role = role;
-    }*/
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_order",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private Set<Order> orders = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_product",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products = new HashSet<>();
+
+    @ManyToMany
+    private Set<Role> roles = new HashSet<>();
+
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public Set<Order> getOrders() {
         return orders;
@@ -117,4 +104,9 @@ public class User {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
+
+
+
+
 }
