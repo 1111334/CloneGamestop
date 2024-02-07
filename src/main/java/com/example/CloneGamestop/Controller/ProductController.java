@@ -79,7 +79,6 @@ public class ProductController {
         }
     }
 
-    //FUNZIONANTE AL 100%
     @DeleteMapping(value = "/delete-product/{idProduct}")
     public ResponseEntity<String> deleteProductById(@PathVariable Long idProduct) {
         try {
