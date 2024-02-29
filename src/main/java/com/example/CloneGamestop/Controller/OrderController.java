@@ -25,7 +25,6 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @PostMapping("/order/{idUser}") //crea un ordine
     public ResponseEntity orderByUserId(@PathVariable Long idUser, @RequestBody Order order) {
         try {// Restituisce una risposta HTTP 200 dopo aver creato un ordine per l'ID utente specificato utilizzando OrderService.
@@ -34,7 +33,6 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @GetMapping(value = "/api/order/{idOrder}")
     public ResponseEntity<OrderDTO> getUserById(@PathVariable Long idOrder) {
         Order order = orderService.viewOrderById(idOrder);
@@ -48,7 +46,6 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
     @GetMapping("/view-all-order")
     public ResponseEntity<List<OrderDTO>> viewAllOrder() {
         List<Order> orderList = orderService.viewAllOrders();
@@ -58,8 +55,6 @@ public class OrderController {
         }
         return ResponseEntity.ok(orderDTOList);
     }
-
-
 
     @PutMapping(value = "/update-order/{idOrder}")
     public ResponseEntity modifyOrder(@PathVariable Long idOrder, @RequestBody Order order) {

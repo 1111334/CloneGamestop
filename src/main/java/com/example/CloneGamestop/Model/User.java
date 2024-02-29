@@ -2,65 +2,37 @@ package com.example.CloneGamestop.Model;
 
 import com.example.CloneGamestop.TestController.Role;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
-
+// Annotation di Lombok per generare automaticamente getter, setter, equals, hashCode, toString
+@Data
+// Annotation di Lombok per generare un costruttore vuoto
+@NoArgsConstructor
+// Annotation per definire questa classe come entità persistente
 @Entity
-@Table(name = "users") // garantisce una corrispondenza diretta e chiara tra un'entità Java e una tabella specifica
-public class User {
+// Annotation per specificare il nome della tabella nel database
+@Table(name = "users")
+public class User /*implements UserDetails*/ {
+    // Annotation per specificare che questo campo è la chiave primaria e generato automaticamente
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Long idUser;
+
+    // Campi per lo username, la password e l'email dell'utente
     private String username;
     private String password;
     private String email;
 
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
+    // Relazione uno a uno con il carrello dell'utente
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
+    // Relazione molti a molti con gli ordini dell'utente
     @ManyToMany
     @JoinTable(
             name = "user_order",
@@ -69,6 +41,7 @@ public class User {
     )
     private Set<Order> orders = new HashSet<>();
 
+    // Relazione molti a molti con i prodotti associati all'utente
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_product",
@@ -77,36 +50,40 @@ public class User {
     )
     private Set<Product> products = new HashSet<>();
 
+    // Relazione molti a molti con i ruoli dell'utente
     @ManyToMany
     private Set<Role> roles = new HashSet<>();
 
-
-    public Cart getCart() {
-        return cart;
+    /* Implementazione del metodo per ottenere le autorizzazioni dell'utente
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Restituisce un singolo ruolo ("USER") come autorizzazione
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    // Implementazione del metodo per ottenere lo username dell'utente (utilizza l'email come username)
+    @Override
+    public String getUsername() {
+        return email;
+    }
+    // Implementazioni dei metodi per verificare lo stato dell'account dell'utente (sono sempre true in questo caso)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-
-
-
-
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }*/
 }

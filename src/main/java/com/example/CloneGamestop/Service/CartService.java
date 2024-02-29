@@ -30,12 +30,13 @@ public class CartService {
     public Cart CartAndAddUserById(Long idUser, Cart cart) {
         User user = userRepository.findById(idUser) //Trova un utente per ID. Se non trovato, lancia un'eccezione.
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + idUser));
-
+        
         cart.setUser(user); //Imposta l'utente nel carrello e lo salva nel repository.
         return cartRepository.save(cart);
     }
 
-    @Transactional //@Transactional garantisce che il metodo esegua in una singola transazione: commit se successo, rollback se errore.
+    @Transactional
+    //@Transactional garantisce che il metodo esegua in una singola transazione: commit se successo, rollback se errore.
     public void associateCartWithUser(Long idUser, Long idCart) {
         User user = userRepository.findById(idUser) //Cerca l'utente per ID; se non trovato, lancia un'eccezione.
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + idUser));
@@ -71,9 +72,9 @@ public class CartService {
         }
     }
 
-   public void deleteCartById(Long idCart) {
+    public void deleteCartById(Long idCart) {
         cartRepository.getReferenceById(idCart);
-   }
+    }
 
 
 }

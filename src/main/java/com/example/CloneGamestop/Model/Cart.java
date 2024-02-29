@@ -3,10 +3,14 @@ package com.example.CloneGamestop.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "cart") // garantisce una corrispondenza diretta e chiara tra un'entità Java e una tabella specifica
 public class Cart {
@@ -32,47 +36,4 @@ public class Cart {
     @JsonManagedReference
     private List<Product> products;
 
-    public Cart() {
-
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public LocalDateTime getDateOfAddition() {
-        return dateOfAddition;
-    }
-
-    public void setDateOfAddition(LocalDateTime dateOfAddition) {
-        this.dateOfAddition = dateOfAddition;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public Long getIdCart() {
-        return idCart;
-    }
-
-    public void setIdCart(Long idCart) {
-        this.idCart = idCart;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -2,12 +2,15 @@ package com.example.CloneGamestop.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "order_table") //nome della tabella
 public class Order {
@@ -19,10 +22,6 @@ public class Order {
     private LocalDateTime dateOrder; // mappa la proprietà corrente dell'entità a una colonna
     private boolean allActionsCompleted;
     private String statusOrder;
-
-    public Order() {
-
-    }
 
     @PrePersist //per inserire l'ora e la data in automatico
     public void prePersist() {
@@ -39,55 +38,6 @@ public class Order {
     )
     private Set<Product> products = new HashSet<>();
 
-    public Long getIdOrder() {
-        return idOrder;
-    }
-
-    public void setIdOrder(Long idOrder) {
-        this.idOrder = idOrder;
-    }
-
-    public LocalDateTime getDateOrder() {
-        return dateOrder;
-    }
-
-    public void setDateOrder(LocalDateTime dateOrder) {
-        this.dateOrder = dateOrder;
-    }
-
-    public String getStatusOrder() {
-        return statusOrder;
-    }
-
-    public void setStatusOrder(String statusOrder) {
-        this.statusOrder = statusOrder;
-    }
-
-    //Da rivedere
-    public boolean getAllActionsCompleted() {
-        return allActionsCompleted;
-    }
-
-    public void setAllActionsCompleted (boolean allActionsCompleted) {
-        this.allActionsCompleted = allActionsCompleted;
-    }
-
-    public Set<User> getUserSet() {
-        return userSet;
-    }
-
-    public void setUserSet(Set<User> userSet) {
-        this.userSet = userSet;
-    }
-
-    public Set<Product> getProductSet() {
-        return products;
-    }
-
-    public void setProductSet(Set<Product> products) {
-        this.products = products;
-    }
-
     //Da rivedere
     public void statusOrderIsCompleteOrNotComplete() {
         if (allActionsCompleted) {
@@ -99,5 +49,12 @@ public class Order {
         orders.statusOrderIsCompleteOrNotComplete();
     }
 
+    public boolean getAllActionsCompleted() {
+        return allActionsCompleted;
+    }
+
+    public Set<Product> getProductSet() {
+        return this.products;
+    }
 }
 

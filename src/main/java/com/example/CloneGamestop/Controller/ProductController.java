@@ -25,7 +25,6 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @PostMapping("create-product/{idOrder}/{idUser}")
     public ResponseEntity ProductByOrderIdAndByUserId(@PathVariable Long idOrder,
                                                       @PathVariable Long idUser,
@@ -36,7 +35,6 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @PostMapping("/add-to-cart/{idProduct}/{idCart}") //Aggiunge un prodotto a un carrello specificato per ID.
     public ResponseEntity addProductToCartById(@PathVariable Long idProduct, @PathVariable Long idCart) {
         try { //Se riuscito, ritorna una risposta HTTP 200 OK.
