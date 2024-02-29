@@ -1,6 +1,5 @@
 package com.example.CloneGamestop.Service;
 
-import com.example.CloneGamestop.DTO.UserDTO;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Repository.CartRepository;
 import com.example.CloneGamestop.Repository.UserRepository;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,11 +25,6 @@ public class UserService {
     public User viewUserDTOById(Long idUser) {
         return userRepository.findById(idUser).orElse(null);
     }
-
-    //METODO SERVICE STREAM
-    /*public List<User> viewAllUser() {
-    //    return userRepository.findAll();
-    }*/
 
     public List<User> getAllUsers() {
         return userRepository.findAll();

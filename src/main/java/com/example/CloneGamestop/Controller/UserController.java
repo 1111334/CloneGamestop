@@ -1,22 +1,15 @@
 package com.example.CloneGamestop.Controller;
 
 import com.example.CloneGamestop.DTO.UserDTO;
-import com.example.CloneGamestop.Model.Cart;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Service.UserService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.transaction.Transactional;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -46,16 +39,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    //METODO ALTERNATIVO PER VISIONARE LA LISTA UTENTI USANDO STREAM
-    /*@GetMapping(value = "/view-all-user")
-    //public ResponseEntity<List<UserDTO>> getAllUsers() {
-    //    List<User> userList = userService.viewAllUser();
-    //    List<UserDTO> userDTOList = userList.stream()
-    //            .map(UserDTO::fromUser)
-    //            .collect(Collectors.toList());
-    //    return ResponseEntity.ok(userDTOList);
-    }*/
 
     @GetMapping(value = "/view-all-user")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
