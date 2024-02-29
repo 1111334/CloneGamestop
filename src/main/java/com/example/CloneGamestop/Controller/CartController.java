@@ -44,7 +44,6 @@ public class CartController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @GetMapping(value = "/api/cart/{idCart}")
     public ResponseEntity<CartDTO> getUserById(@PathVariable Long idCart) {
         Cart cart = cartService.viewCartDTOById(idCart);
@@ -58,7 +57,6 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
     @GetMapping("/view-all-cart")
     public ResponseEntity<List<CartDTO>> viewAllCart() {
         List<Cart> cartList = cartService.viewListCart();
@@ -69,8 +67,6 @@ public class CartController {
         return ResponseEntity.ok(cartDTOList);
     }
 
-
-
     @PutMapping(value = "update-cart/{idCart}")
     public ResponseEntity modifyCart(@PathVariable Long idCart, @RequestBody Cart cart) {
         try {
@@ -79,17 +75,6 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
-
-    //Finire la richiesta delete di cart
-    /*@DeleteMapping(value = "/delete-cart/{idCart}")
-    public ResponseEntity deleteCart(@PathVariable Long idCart) {
-       try {
-           return ResponseEntity.ok(cartService.deleteCartById(idCart));
-       }catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-       }
-    }*/
 
     @DeleteMapping(value = "/delete-cart/{idCart}")
     public ResponseEntity<String> deleteCart(@PathVariable Long idCart) {
