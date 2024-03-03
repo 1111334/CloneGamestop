@@ -26,6 +26,17 @@ public class UserController {
         }
     }
 
+    @PostMapping("/createUserAssociate/{idProduct}/{idOrder}/{idCart}")
+    public ResponseEntity createUserWithProductOrderCart(@RequestBody User user,
+                                                         @PathVariable Long idProduct,
+                                                         @PathVariable Long idOrder,
+                                                         @PathVariable Long idCart) {
+
+        User createdUser = userService.createUserWithProductOrderCart(user, idProduct, idOrder, idCart);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+
     @GetMapping(value = "/api/users/{idUser}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long idUser) {
         User user = userService.viewUserDTOById(idUser);
@@ -67,5 +78,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
 }
+
+
+
+
+
