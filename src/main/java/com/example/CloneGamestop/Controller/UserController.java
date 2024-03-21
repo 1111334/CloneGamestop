@@ -1,5 +1,6 @@
 package com.example.CloneGamestop.Controller;
 
+import com.example.CloneGamestop.DTO.SignupActivationDTO;
 import com.example.CloneGamestop.DTO.UserDTO;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Service.UserService;
@@ -12,15 +13,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/auth")
 public class UserController {
-
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/create-user")
-    public ResponseEntity createUser(@RequestBody User user) {
+
+    @PostMapping("/signup")
+    public ResponseEntity access(@RequestBody UserDTO userDTO) throws Exception {
         try {
-            return ResponseEntity.ok(userService.users(user)); // se tutto è ok crea lo user
+            return ResponseEntity.ok(userService.signup(userDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/activation")
+    public ResponseEntity activation(@RequestBody SignupActivationDTO signupActivationDTO) throws Exception {
+        try {
+            return ResponseEntity.ok(userService.activate(signupActivationDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/create-user")
+    public ResponseEntity createUser(@RequestBody UserDTO userDTO) {
+        try {
+            return ResponseEntity.ok(userService.users(userDTO)); // se tutto è ok crea lo user
         } catch (Exception e) { // altrimenti errore Http 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -71,11 +91,12 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/delete-user/{idUser}")
-    public ResponseEntity deleteUser(@PathVariable Long idUser) {
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long idUser) {
         try {
-            return ResponseEntity.ok(userService.deletedUser(idUser)); //se tutto ok elimina lo user con id specificato
-        } catch (Exception e) { //altrimenti errore Http 400
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            UserDTO deletedUser = userService.deleteUser(idUser);
+            return ResponseEntity.ok(deletedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

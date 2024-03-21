@@ -1,18 +1,20 @@
 package com.example.CloneGamestop.DTO;
 
 import com.example.CloneGamestop.Model.Cart;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class CartDTO {
 
     private Long idCart;
     private String shippingAddress;
     private LocalDateTime dateOfAddition;
 
-    public CartDTO() {
-
-    }
+    //public CartDTO() {
+//
+    //}
 
     public Long getIdCart() {
         return idCart;

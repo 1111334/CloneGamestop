@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +26,17 @@ public class User /*implements UserDetails*/ {
 
     // Campi per lo username, la password e l'email dell'utente
     private String username;
+    private String surname;
     private String password;
+
+    @Column(unique = true)
     private String email;
+
+    private boolean isActive;
+    @Column(length = 36)
+    private String activationCode;
+
+    private LocalDateTime jwtCreatedOn;
 
     // Relazione uno a uno con il carrello dell'utente
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -54,36 +64,5 @@ public class User /*implements UserDetails*/ {
     @ManyToMany
     private Set<Role> roles = new HashSet<>();
 
-    /* Implementazione del metodo per ottenere le autorizzazioni dell'utente
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Restituisce un singolo ruolo ("USER") come autorizzazione
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
 
-    // Implementazione del metodo per ottenere lo username dell'utente (utilizza l'email come username)
-    @Override
-    public String getUsername() {
-        return email;
-    }
-    // Implementazioni dei metodi per verificare lo stato dell'account dell'utente (sono sempre true in questo caso)
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }*/
 }
