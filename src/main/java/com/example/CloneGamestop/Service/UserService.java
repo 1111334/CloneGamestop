@@ -17,9 +17,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+// Service per la gestione degli utenti
 @Service
 public class UserService {
 
+    // Iniezione dei repository necessari e del servizio di notifica email
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -31,6 +33,7 @@ public class UserService {
     @Autowired
     private MailNotificationService mailNotificationService;
 
+    // Metodo per la registrazione di un nuovo utente
     public User signup(UserDTO userDTO) throws Exception {
         Optional<User> userInDB = userRepository.findByEmail(userDTO.getEmail());
         if (userInDB.isPresent()) throw new Exception("User already Exists");
@@ -45,6 +48,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // Metodo per attivare l'account di un utente tramite codice di attivazione
     public User activate(SignupActivationDTO signupActivationDTO) throws Exception {
         User user =  userRepository.findByActivationCode(signupActivationDTO.getActivationCode());
         if (user == null) throw new Exception("User not found");
@@ -53,6 +57,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // Metodo per la creazione di un nuovo utente
     public User users(UserDTO userDTO) throws Exception {
         Optional<User> existingUser = userRepository.findByEmail(userDTO.getEmail());
         if (existingUser.isPresent()) {
@@ -67,6 +72,7 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
+    // Metodo per creare un utente associandolo a un prodotto, un ordine e un carrello tramite i loro ID
     @Transactional
     public User createUserWithProductOrderCart(User user, Long productId, Long orderId, Long cartId) {
         Product product = productRepository.findById(productId)
@@ -85,39 +91,36 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // Metodo per visualizzare un utente tramite ID
     public User viewUserDTOById(Long idUser) {
         return userRepository.findById(idUser).orElse(null);
     }
 
+    // Metodo per ottenere tutti gli utenti
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    // Metodo per aggiornare un utente tramite ID e un oggetto User
     public User updateUser(Long idUser, User updateUser) throws Exception {
-
         if (userRepository.findById(idUser).isPresent()) {
-
             User user = userRepository.findById(idUser).get();
-
             if (Objects.nonNull(updateUser.getUsername())) {
                 user.setUsername(updateUser.getUsername());
             }
-
             if (Objects.nonNull(updateUser.getPassword())) {
                 user.setUsername(updateUser.getPassword());
             }
-
             if (Objects.nonNull(updateUser.getEmail())) {
                 user.setUsername(updateUser.getEmail());
             }
-
             return userRepository.save(user);
         } else {
             throw new Exception(String.format("User with ID %s not found", idUser));
         }
     }
 
-    // Nel service UserService
+    // Metodo per eliminare un utente tramite ID
     public UserDTO deleteUser(Long idUser) throws Exception {
         Optional<User> userOptional = userRepository.findById(idUser);
         if (userOptional.isPresent()) {
@@ -128,8 +131,4 @@ public class UserService {
             throw new Exception("User not found");
         }
     }
-
-
-
-
 }

@@ -1,5 +1,7 @@
 package com.example.CloneGamestop.Service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.example.CloneGamestop.DTO.LoginDTO;
 import com.example.CloneGamestop.DTO.LoginRTO;
 import com.example.CloneGamestop.Model.User;
@@ -7,52 +9,53 @@ import com.example.CloneGamestop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class LoginService {
-    // Iniezione della dipendenza UserRepository
+
     @Autowired
     private UserRepository userRepository;
 
     // Metodo per gestire il login
-    public LoginRTO login(LoginDTO loginDTO) {
-        /** userRepository.findByEmail(loginDTO.getEmail())*/
+    public LoginRTO login(LoginDTO loginDTO) throws UnsupportedEncodingException {
+        // Verifica se il LoginDTO è nullo
         if (loginDTO == null) return null;
 
-        // Verifica se il LoginDTO è nullo
+        // Verifica se l'utente esiste nel database ed è attivo
         Optional<User> userFromDB = userRepository.findByEmail(loginDTO.getEmail());
         if (userFromDB.isEmpty() || !userFromDB.get().isActive()) return null;
 
-        // Controlla se l'utente esiste nel database e se è attivo
+        // Verifica se l'utente può effettuare il login confrontando le password
         boolean canLogin = canUserLogin(userFromDB.get(), loginDTO.getPassword());
         if (!canLogin) return null;
 
-        // Verifica se l'utente può effettuare il login
+        // Genera il JWT e imposta il timestamp di creazione sull'utente, quindi salva le modifiche nel database
         String JWT = getJWT(userFromDB.get());
-        // Imposto la data e ora di creazione del JWT sull'utente e salvo le modifiche nel database
-        //User user = userFromDB.orElse(null);
-        // Imposta il JWT creato sull'utente e salva le modifiche nel database
         userFromDB.get().setJwtCreatedOn(LocalDateTime.now());
         userRepository.save(userFromDB.get());
 
-
-        userFromDB.get().setPassword(null);// per non rendere visibile la password alla creazione di un utente
-        LoginRTO out = new LoginRTO();// Crea un oggetto LoginRTO per restituire i dati del login
+        // Crea un oggetto LoginRTO per restituire i dati del login
+        userFromDB.get().setPassword(null); // Per evitare di esporre la password quando si restituiscono i dati dell'utente
+        LoginRTO out = new LoginRTO();
         out.setJWT(JWT);
         out.setUser(userFromDB.get());
 
         return out;
     }
 
-    // Metodo statico per verificare se l'utente può effettuare il login
+    // Metodo statico per verificare se l'utente può effettuare il login confrontando le password
     public static boolean canUserLogin(User user, String password) {
         return user.getPassword().equals(password);
     }
 
-    // Metodo statico per ottenere un JSON Web Token (JWT) per l'utente
-    public static String getJWT(User user) {
-        return "---------------------------";
+    // Metodo statico per generare un JSON Web Token (JWT) per l'utente
+    public static final String JWT_SECRET = "d573f999-ed10-4f67-ad43-4cd2c1d08cc5";
+
+    // Genera il JWT con l'id dell'utente
+    public static String getJWT(User user) throws UnsupportedEncodingException {
+        return JWT.create().withClaim("id", user.getIdUser()).sign(Algorithm.HMAC512(JWT_SECRET));
     }
 }

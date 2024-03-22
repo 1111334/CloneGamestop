@@ -23,8 +23,8 @@ public class MailNotificationService {
         // Creazione di un oggetto SimpleMailMessage per comporre l'email
         SimpleMailMessage sms = new SimpleMailMessage();
         sms.setTo(user.getEmail()); // Imposta il destinatario dell'email
-        sms.setFrom("maicolc444@gmail.com"); // Imposta l'indirizzo email del mittente
-        sms.setReplyTo("maicolc444@gmail.com"); // Imposta l'indirizzo email per le risposte
+        sms.setFrom("fij08780@fosiq.com"); // Imposta l'indirizzo email del mittente
+        sms.setReplyTo("fij08780@fosiq.com"); // Imposta l'indirizzo email per le risposte
         sms.setSubject("ti sei iscritto alla piattaforma" + user.getActivationCode()); // Imposta l'oggetto dell'email
         sms.setText("il codice di attivazione e: " + user.getActivationCode()); // Imposta il corpo dell'email
 

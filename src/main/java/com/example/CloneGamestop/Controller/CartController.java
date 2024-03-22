@@ -1,6 +1,5 @@
 package com.example.CloneGamestop.Controller;
 
-
 import com.example.CloneGamestop.DTO.CartDTO;
 import com.example.CloneGamestop.Model.Cart;
 import com.example.CloneGamestop.Service.CartService;
@@ -13,38 +12,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+// Indica che questa classe è un controller REST e restituisce risposte JSON
 public class CartController {
     @Autowired
-    private CartService cartService;
+    private CartService cartService; // Iniezione della dipendenza del servizio di carrello
 
     @PostMapping("/create-cart")
+    // Metodo per gestire la creazione del carrello
     public ResponseEntity cartCreated(@RequestBody Cart cart) {
-        try { //Il metodo cart() del servizio salva il carrello. Se riuscito, ritorna HTTP 200 OK con il carrello creato.
+        try {
+            // Il metodo cart() del servizio salva il carrello. Se riuscito, ritorna HTTP 200 OK con il carrello creato.
             return ResponseEntity.ok(cartService.cart(cart));
-        } catch (Exception e) { //In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
+        } catch (Exception e) {
+            // In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PostMapping("/cart/{idUser}") //Crea un carrello e associa un utente per ID.
+    @PostMapping("/cart/{idUser}")
+    // Crea un carrello e associa un utente per ID
     public ResponseEntity<String> createCartAndAddUserById(@PathVariable Long idUser, @RequestBody Cart cart) {
         try {
-            cartService.CartAndAddUserById(idUser, cart); //Se riuscito, ritorna un messaggio di successo.
-            return ResponseEntity.ok("Cart associated with User successfully.");
-        } catch (Exception e) { //In caso di errore, ritorna un messaggio d'errore.
+            cartService.CartAndAddUserById(idUser, cart); // Se riuscito, ritorna un messaggio di successo
+            return ResponseEntity.ok("Carrello associato con successo all'utente.");
+        } catch (Exception e) {
+            // In caso di errore, ritorna un messaggio d'errore
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PostMapping("/associate-cart/{idUser}/{idCart}")
+    // Associa un carrello a un utente specificato per ID
     public ResponseEntity<String> associateCartWithUser(@PathVariable Long idUser, @PathVariable Long idCart) {
         try {
-            cartService.associateCartWithUser(idUser, idCart); //Associa un carrello a un utente specificato per ID.
-            return ResponseEntity.ok("Cart associated with User successfully."); //Se riuscito, ritorna un messaggio di successo;
-        } catch (Exception e) { //altrimenti, un messaggio d'errore.
+            cartService.associateCartWithUser(idUser, idCart); // Se riuscito, ritorna un messaggio di successo
+            return ResponseEntity.ok("Carrello associato con successo all'utente.");
+        } catch (Exception e) {
+            // In caso di errore, ritorna un messaggio d'errore
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @GetMapping(value = "/api/cart/{idCart}")
+    // Ottiene un carrello tramite ID e restituisce un DTO del carrello
     public ResponseEntity<CartDTO> getUserById(@PathVariable Long idCart) {
         Cart cart = cartService.viewCartDTOById(idCart);
 
@@ -57,39 +67,41 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/view-all-cart")
+    // Ottiene tutti i carrelli e restituisce una lista di DTO dei carrelli
     public ResponseEntity<List<CartDTO>> viewAllCart() {
         List<Cart> cartList = cartService.viewListCart();
         List<CartDTO> cartDTOList = new ArrayList<>();
         for (Cart cart : cartList) {
-            cartDTOList.add(CartDTO.fromCart(cart));
+            cartDTOList.add(CartDTO.fromCart(cart)); // Converti ogni carrello in DTO e aggiungilo alla lista
         }
-        return ResponseEntity.ok(cartDTOList);
+        return ResponseEntity.ok(cartDTOList); // Restituisce la lista di DTO dei carrelli
     }
 
     @PutMapping(value = "update-cart/{idCart}")
+    // Metodo per modificare un carrello esistente
     public ResponseEntity modifyCart(@PathVariable Long idCart, @RequestBody Cart cart) {
         try {
+            // Modifica il carrello e restituisce una risposta OK
             return ResponseEntity.ok(cartService.updateCart(idCart, cart));
-        }catch (Exception e) {
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @DeleteMapping(value = "/delete-cart/{idCart}")
+    // Metodo per eliminare un carrello esistente
     public ResponseEntity<String> deleteCart(@PathVariable Long idCart) {
         try {
-            cartService.deleteCartById(idCart);
+            cartService.deleteCartById(idCart); // Elimina il carrello
             return ResponseEntity.ok("Il carrello è stato eliminato con successo.");
         } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 500 Internal Server Error e un messaggio d'errore
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Si è verificato un errore durante l'eliminazione del carrello.");
         }
     }
 
-    //PROSSIMA VOLTA CREARE UN CARRELLO ASSOCIATO AD UNO USER COSI DA NON RISCONTRARE PROBLEMI NEL CANCELLARE UN CARRELLO
-
-
-
-
-
+    // DA IMPLEMENTARE: CREARE UN CARRELLO ASSOCIATO AD UN UTENTE PER EVITARE PROBLEMI NELLA CANCELLAZIONE DEI CARRELLI
 }

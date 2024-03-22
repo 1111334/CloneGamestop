@@ -1,11 +1,13 @@
-package com.example.CloneGamestop.DTO;
+package com.example.CloneGamestop.DTO; // Package che contiene la classe LoginDTO
 
-import lombok.Data;
+import lombok.Data; // Importa l'annotazione @Data di Lombok
 
-@Data
-public class LoginDTO {
-    /*this is the user email*/
-    private String email;
-    /*this is the password CLEAR*/
-    private String password;
+@Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
+public class LoginDTO { // Dichiarazione della classe LoginDTO
+
+    /* Questo è l'email dell'utente */
+    private String email; // Campo per l'email dell'utente
+
+    /* Questa è la password NON CIFRATA */
+    private String password; // Campo per la password dell'utente
 }

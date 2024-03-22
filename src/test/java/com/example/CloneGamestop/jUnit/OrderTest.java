@@ -15,26 +15,34 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-//La classe è annotata con @RunWith(SpringRunner.class) che indica l'utilizzo del runner di Spring per eseguire i test.
+// Indica l'utilizzo del runner di Spring per eseguire i test.
 @SpringBootTest
-// viene utilizzato per indicare che si desidera caricare l'applicazione Spring Boot durante l'esecuzione dei test.
+// Indica che si desidera caricare l'applicazione Spring Boot durante l'esecuzione dei test.
 public class OrderTest {
     @Autowired
-    //viene utilizzato per iniettare il bean ProductRepository all'interno della classe di test.
+    // Inietta il bean OrderRepository all'interno della classe di test.
     private OrderRepository orderRepository;
 
     @Test
+    // Metodo di test
     public void testFindOrdersById() {
+        // Crea una collezione di ID degli ordini
         Collection<Long> collectionsOrder = Arrays.asList(1L, 2L);
 
+        // Itera attraverso la collezione di ID degli ordini e chiama il metodo testFindOrderById per ciascuno
         for (Long id : collectionsOrder) {
             testFindOrderById(id);
         }
     }
 
+    // Metodo per testare la ricerca di un ordine per ID
     private void testFindOrderById(Long id) {
+        // Cerca un ordine per ID
         Optional<Order> optionalOrder = orderRepository.findById(id);
+        // Ottiene l'ordine se presente, altrimenti restituisce null
         Order order = optionalOrder.orElse(null);
+        // Verifica se l'ID dell'ordine corrisponde all'ID atteso
         assertEquals(id, order != null ? order.getIdOrder() : null);
     }
 }
+//Test jUnit da rivedere e approfondire l'argomento (ripassare il tutto).

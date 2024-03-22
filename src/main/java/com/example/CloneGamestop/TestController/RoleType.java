@@ -1,7 +1,9 @@
 package com.example.CloneGamestop.TestController;
 
-//Da anallizzare meglio
+// Enumerazione dei tipi di ruolo utente
 public enum RoleType {
+    // Ruolo amministratore
     ROLE_ADMIN,
+    // Ruolo utente normale
     ROLE_USER;
 }
