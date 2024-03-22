@@ -1,61 +1,56 @@
-Sviluppa un backend completo per un negozio online.
-Include autenticazione degli utenti, gestione dei prodotti,
-carrello della spesa e ordini.
-Tecnologie: Spring Boot, JPA/Hibernate, Spring Security, JWT per l'autenticazione.
-Punti di forza: Implementazione di relazioni complesse, gestione delle transazioni, sicurezza e autenticazione
+<--DESCRIZIONE DA RIVISIONARE E SPIEGARE NEL DETTAGLIO-->
 
-Traccia: Backend di un Negozio Online
-1. Inizializzazione del Progetto
-Crea un nuovo progetto Spring Boot usando Spring Initializr con le dipendenze necessarie (Spring Web, Spring Data JPA, Spring Security, ecc.).
-Configura un database (es. MySQL, PostgreSQL) e aggiungi la dipendenza necessaria nel pom.xml.
-2. Creazione delle Entità
+Il progetto "Clone-Gamestop" è un'applicazione di tipo e-commerce che si propone di replicare alcune funzionalità del noto sito di vendita di videogiochi "Gamestop".
+L'applicazione consente agli utenti di visualizzare, cercare e acquistare prodotti come videogiochi, console e accessori correlati.
 
-//FATTO//
-a. Utente:
-id, username, password (criptata), email, ruolo (cliente, amministratore).
+Inoltre, offre funzionalità per la gestione degli utenti, inclusa la registrazione, l'autenticazione e la gestione del profilo.
+Gli utenti possono aggiungere prodotti al proprio carrello, effettuare ordini e visualizzare lo storico degli acquisti.
 
-b. Prodotto:
-id, nome, descrizione, prezzo, quantità disponibile.
+Il progetto utilizza tecnologie come Spring Boot per lo sviluppo del backend,
+Spring Data JPA per l'accesso ai dati, MySQL come database,
+Spring Security per la gestione dell'autenticazione e dell'autorizzazione degli utenti,
+e Spring Mail per l'invio di notifiche via email.
 
-c. Carrello:
-id, riferimento all'utente.
+Gli strumenti e le librerie di testing, come JUnit,
+sono utilizzati per garantire la qualità del codice e per effettuare test automatizzati.
+L'applicazione è strutturata seguendo i principi di progettazione e sviluppo software basati su Spring Framework e segue le migliori pratiche di sviluppo.
 
-d. VoceCarrello:
-id, riferimento al carrello, riferimento al prodotto, quantità.
+1. Dipendenze del progetto (pom.xml):
+Il file pom.xml definisce le dipendenze del progetto, inclusi i framework, le librerie e gli strumenti utilizzati.
+Alcune dipendenze includono:
 
-e. Ordine:
-id, riferimento all'utente, data, stato (es. in attesa, completato).
+Spring Boot Starter: Fornisce le dipendenze necessarie per avviare un'applicazione Spring Boot.
+Spring Data JPA: Per l'accesso ai dati e la persistenza.
+MySQL Connector: Per la connessione al database MySQL.
+Spring Boot Starter Test: Per i test automatizzati.
+Lombok: Una libreria che semplifica la scrittura di codice riducendo la quantità di boilerplate code.
 
-f. DettagliOrdine:
-id, riferimento all'ordine, riferimento al prodotto, quantità.
-3. Relazioni tra Entità
-Un utente può avere un solo carrello.
-Un carrello può avere molte voci di carrello.
-Un ordine può avere molteplici dettagli di ordine.
-4. Configurazione JPA/Hibernate
-Implementa i repository JPA per ogni entità.
-Definisci le relazioni tra le entità usando le annotazioni di JPA (es. @OneToMany, @ManyToOne).
-5. Spring Security e JWT
-a. Configura Spring Security per gestire l'autenticazione e l'autorizzazione.
-b. Implementa un servizio di autenticazione per generare JWT quando un utente effettua il login e per verificare il JWT in ogni richiesta successiva.
+2. Controller:
+I controller gestiscono le richieste HTTP provenienti dai client e coordinano le interazioni con i servizi sottostanti.
+Ogni controller è annotato con @RestController per indicare che fornisce API RESTful.
 
-6. Endpoint API
-a. Autenticazione:
+3. Servizi:
+I servizi contengono la logica di business dell'applicazione.
+Gestiscono la logica di elaborazione delle richieste provenienti dai controller e interagiscono con i repository per accedere ai dati.
 
-Endpoint per la registrazione di nuovi utenti.
-Endpoint per il login che restituisce un JWT valido.
-b. Gestione dei Prodotti:
+4. Repository:
+I repository sono interfacce che estendono JpaRepository di Spring Data JPA.
+Forniscono metodi per eseguire operazioni CRUD (Create, Read, Update, Delete) sul database.
 
-Endpoint per aggiungere un nuovo prodotto.
-Endpoint per ottenere la lista dei prodotti disponibili.
-c. Carrello e Ordini:
+5. Test unitari:
+Sono presenti test unitari per alcune parti del codice,
+che consentono di verificare il corretto funzionamento dei metodi e delle classi.
 
-Endpoint per aggiungere prodotti al carrello di un utente.
-Endpoint per creare un nuovo ordine da un carrello.
-Endpoint per ottenere gli ordini di un utente.
-7. Test
-Utilizza Postman o un altro strumento per testare tutti gli endpoint.
-Assicurati che la sicurezza e l'autenticazione funzionino come previsto.
-8. Documentazione e Commenti
-Documenta gli endpoint, i modelli, i servizi e le configurazioni.
-Aggiungi commenti dettagliati nel codice per spiegare le parti più complesse o critiche del sistema.
+6. Configurazioni:
+All'interno del codice sono presenti configurazioni per il database MySQL e per l'invio di email tramite SMTP.
+
+7. Security:
+Sezioni di codice commentate riguardano l'implementazione di Spring Security e JSON Web Token (JWT) per l'autenticazione e l'autorizzazione degli utenti,
+ ma sembra che al momento siano disabilitate.
+
+8. Descrizioni dettagliate:
+Ogni parte del codice è stata commentata per fornire una descrizione dettagliata di cosa fa ogni riga o blocco di codice,
+aiutando a capire il suo scopo e il funzionamento complessivo dell'applicazione.
+
+
+

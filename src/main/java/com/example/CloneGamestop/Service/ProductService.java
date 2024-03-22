@@ -11,15 +11,15 @@ import com.example.CloneGamestop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
+// Service per la gestione delle operazioni relative ai prodotti
 @Service
 public class ProductService {
 
+    // Iniezione dei repository necessari
     @Autowired
     private ProductRepository productRepository;
 
@@ -32,11 +32,12 @@ public class ProductService {
     @Autowired
     private CartRepository cartRepository;
 
-
+    // Metodo per creare un nuovo prodotto
     public Product productCreate(Product product) {
-        return productRepository.save(product); //salva il prodotto creato
+        return productRepository.save(product);
     }
 
+    // Metodo per creare un nuovo prodotto associandolo a un ordine e a un utente tramite i rispettivi ID
     public Product productCreateByOrderIdAndByUserId(Long idOrder, Long idUser, Product product) {
         Order order = orderRepository.findById(idOrder).get();
         order.getProductSet().add(product);
@@ -47,27 +48,23 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    // Metodo per aggiungere un prodotto a un carrello utilizzando gli ID del prodotto e del carrello
     public Product addProductToCart(Long idProduct, Long idCart) {
-        // Recupera il prodotto dal database utilizzando l'ID
         Optional<Product> optionalProduct = productRepository.findById(idProduct);
-        if (optionalProduct.isPresent()) { //controlla se esista o meno il prodotto
+        if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
 
-            // Recupera il carrello dal database utilizzando l'ID
             Optional<Cart> optionalCart = cartRepository.findById(idCart);
-            if (optionalCart.isPresent()) { //controlla se esista o meno il carrello
+            if (optionalCart.isPresent()) {
                 Cart cart = optionalCart.get();
-
-                // Associa il prodotto al carrello
                 product.setCart(cart);
                 cart.getProducts().add(product);
 
-                // Salva il prodotto e il carrello nel database
                 productRepository.save(product);
                 cartRepository.save(cart);
 
                 return product;
-            } else { // Lancia un'eccezione con un messaggio specifico se il carrello o il prodotto non sono trovati per l'ID fornito.
+            } else {
                 throw new RuntimeException("Cart not found with ID: " + idCart);
             }
         } else {
@@ -75,68 +72,53 @@ public class ProductService {
         }
     }
 
+    // Metodo per visualizzare tutti i prodotti
     public List<Product> viewListProduct() {
         return productRepository.findAll();
     }
 
+    // Metodo per visualizzare un prodotto tramite ID
     public Product viewProductDTOById(Long idProduct) {
         return productRepository.findById(idProduct).orElse(null);
     }
 
+    // Metodo per aggiornare un prodotto utilizzando l'ID del prodotto e un oggetto Product
     public Product updatedProduct(Long idProduct, Product updateProduct) throws Exception {
-
         if (productRepository.findById(idProduct).isPresent()) {
-
             Product product = productRepository.findById(idProduct).get();
-
             if (Objects.nonNull(updateProduct.getName())) {
                 product.setName(updateProduct.getName());
             }
-
             if (Objects.nonNull(updateProduct.getDescription())) {
                 product.setDescription(updateProduct.getDescription());
             }
-
             if (Objects.nonNull(updateProduct.getPrice())) {
                 product.setPrice(updateProduct.getPrice());
             }
-
             if (Objects.nonNull(updateProduct.getQuantityAvailable())) {
                 product.setQuantityAvailable(updateProduct.getQuantityAvailable());
             }
-
             return productRepository.save(product);
         } else {
             throw new Exception(String.format("Product with ID %s not found", idProduct));
         }
     }
 
+    // Metodo per eliminare un prodotto utilizzando l'ID del prodotto
     public void deleteProductByIdProduct(Long idProduct) {
         Optional<Product> optionalProduct = productRepository.findById(idProduct);
-
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
-
-            // Rimuovi il prodotto dalle associazioni con gli utenti nella tabella di join user_product
             for (User user : product.getUsers()) {
                 user.getProducts().remove(product);
             }
-
-            // Rimuovi il prodotto dalle associazioni con gli ordini
             for (Order order : product.getOrders()) {
                 order.getProductSet().remove(product);
             }
-
-            // Rimuovi il prodotto dal carrello, se presente
             if (product.getCart() != null) {
                 product.getCart().getProducts().remove(product);
             }
-
-            // Infine, elimina effettivamente il prodotto
             productRepository.delete(product);
         }
     }
-
-
-
 }

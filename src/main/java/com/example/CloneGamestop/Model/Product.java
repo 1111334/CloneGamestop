@@ -1,36 +1,37 @@
-package com.example.CloneGamestop.Model;
+package com.example.CloneGamestop.Model; // Pacchetto che contiene la classe Product
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference; // Importa l'annotazione JsonBackReference
+import jakarta.persistence.*; // Importa le annotazioni di JPA
+import lombok.Data; // Importa l'annotazione @Data di Lombok
+import lombok.NoArgsConstructor; // Importa l'annotazione @NoArgsConstructor di Lombok
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashSet; // Importa la classe HashSet
+import java.util.Set; // Importa la classe Set
 
-@Data
-@NoArgsConstructor
-@Entity
-@Table(name = "product") //garantisce una corrispondenza diretta e chiara tra un'entità Java e una tabella specifica
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //genera id auto-incrementanti
-    @Column(name = "id_product") //mappa la proprietà corrente dell'entità a una colonna chiamata id_user nella tabella del database.
-    private Long idProduct;
-    private String name;
-    private String description;
-    private int price;
-    private int quantityAvailable;
+@Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
+@NoArgsConstructor // Annotazione Lombok per generare un costruttore vuoto
+@Entity // Indica che questa classe è un'entità JPA
+@Table(name = "product") // Specifica il nome della tabella nel database
+public class Product { // Dichiarazione della classe Product
 
-    @ManyToOne(cascade = CascadeType.ALL) //molti prodotti per un carrello
-    @JoinColumn(name = "id_cart") // l'annotazione @JoinColumn specifica la colonna nel database (name = "id_cart") che viene utilizzata per la relazione.
-    @JsonBackReference
-    private Cart cart;
+    @Id // Indica che questo campo è la chiave primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera valori per questa colonna utilizzando l'identità del database
+    @Column(name = "id_product") // Mappa la proprietà corrente dell'entità a una colonna chiamata id_product nella tabella del database
+    private Long idProduct; // Campo per l'identificatore del prodotto
 
-    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) //molti prodotti per molti user
-    private Set<User> users = new HashSet<>();
+    private String name; // Campo per il nome del prodotto
+    private String description; // Campo per la descrizione del prodotto
+    private int price; // Campo per il prezzo del prodotto
+    private int quantityAvailable; // Campo per la quantità disponibile del prodotto
 
-    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) //molti prodotti per molti ordini
-    private Set<Order> orders = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.ALL) // Definisce una relazione molti-a-uno con la classe Cart
+    @JoinColumn(name = "id_cart") // Specifica la colonna nel database che fa riferimento al carrello
+    @JsonBackReference // Ignora questa proprietà durante la serializzazione JSON per evitare loop infiniti
+    private Cart cart; // Campo per il carrello associato al prodotto
 
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) // Definisce una relazione molti-a-molti con la classe User
+    private Set<User> users = new HashSet<>(); // Campo per il set di utenti associati al prodotto
+
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL) // Definisce una relazione molti-a-molti con la classe Order
+    private Set<Order> orders = new HashSet<>(); // Campo per il set di ordini associati al prodotto
 }

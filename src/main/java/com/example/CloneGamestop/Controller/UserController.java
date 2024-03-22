@@ -1,5 +1,6 @@
 package com.example.CloneGamestop.Controller;
 
+import com.example.CloneGamestop.DTO.SignupActivationDTO;
 import com.example.CloneGamestop.DTO.UserDTO;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Service.UserService;
@@ -12,21 +13,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/auth")
+// Indica che questo controller gestisce le richieste relative all'autenticazione
 public class UserController {
-
     @Autowired
-    private UserService userService;
+    private UserService userService; // Utilizza il servizio UserService per eseguire operazioni relative agli utenti
+
+    @PostMapping("/signup")
+    // Metodo per gestire la registrazione di un nuovo utente
+    public ResponseEntity access(@RequestBody UserDTO userDTO) throws Exception {
+        try {
+            // Registra un nuovo utente e restituisce una risposta OK con i dati dell'utente registrato
+            return ResponseEntity.ok(userService.signup(userDTO));
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/activation")
+    // Metodo per gestire l'attivazione dell'account utente
+    public ResponseEntity activation(@RequestBody SignupActivationDTO signupActivationDTO) throws Exception {
+        try {
+            // Attiva l'account utente e restituisce una risposta OK con i dati dell'utente attivato
+            return ResponseEntity.ok(userService.activate(signupActivationDTO));
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
     @PostMapping(value = "/create-user")
-    public ResponseEntity createUser(@RequestBody User user) {
+    // Metodo per creare un nuovo utente
+    public ResponseEntity createUser(@RequestBody UserDTO userDTO) {
         try {
-            return ResponseEntity.ok(userService.users(user)); // se tutto è ok crea lo user
-        } catch (Exception e) { // altrimenti errore Http 400
+            // Crea un nuovo utente e restituisce una risposta OK con i dati dell'utente creato
+            return ResponseEntity.ok(userService.users(userDTO));
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PostMapping("/createUserAssociate/{idProduct}/{idOrder}/{idCart}")
+    // Metodo per creare un utente associato a un prodotto, un ordine e un carrello
     public ResponseEntity createUserWithProductOrderCart(@RequestBody User user,
                                                          @PathVariable Long idProduct,
                                                          @PathVariable Long idOrder,
@@ -36,8 +66,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-
     @GetMapping(value = "/api/users/{idUser}")
+    // Metodo per ottenere un utente tramite ID e restituire un DTO dell'utente
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long idUser) {
         User user = userService.viewUserDTOById(idUser);
 
@@ -52,35 +82,38 @@ public class UserController {
     }
 
     @GetMapping(value = "/view-all-user")
+    // Metodo per ottenere tutti gli utenti e restituire una lista di DTO degli utenti
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> userList = userService.getAllUsers();
         List<UserDTO> userDTOList = new ArrayList<>();
         for (User user : userList) {
-            userDTOList.add(UserDTO.fromUser(user));
+            userDTOList.add(UserDTO.fromUser(user)); // Converti ogni utente in DTO e aggiungilo alla lista
         }
-        return ResponseEntity.ok(userDTOList);
+        return ResponseEntity.ok(userDTOList); // Restituisce la lista di DTO degli utenti
     }
 
     @PutMapping(value = "/update-user/{idUser}")
+    // Metodo per aggiornare un utente esistente
     public ResponseEntity updatedUser(@PathVariable Long idUser, @RequestBody User user) {
         try {
-            return ResponseEntity.ok(userService.updateUser(idUser, user)); //se tutto ok aggiorna lo user con id specificato
-        } catch (Exception e) { //altrimenti errore Http 400
+            // Aggiorna l'utente e restituisce una risposta OK
+            return ResponseEntity.ok(userService.updateUser(idUser, user));
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @DeleteMapping(value = "/delete-user/{idUser}")
-    public ResponseEntity deleteUser(@PathVariable Long idUser) {
+    // Metodo per eliminare un utente esistente
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long idUser) {
         try {
-            return ResponseEntity.ok(userService.deletedUser(idUser)); //se tutto ok elimina lo user con id specificato
-        } catch (Exception e) { //altrimenti errore Http 400
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            // Elimina l'utente e restituisce una risposta OK con i dati dell'utente eliminato
+            UserDTO deletedUser = userService.deleteUser(idUser);
+            return ResponseEntity.ok(deletedUser);
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 404 Not Found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }
-
-
-
-
-

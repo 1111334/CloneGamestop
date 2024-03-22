@@ -12,25 +12,29 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
-
 @RunWith(SpringRunner.class)
-//La classe è annotata con @RunWith(SpringRunner.class) che indica l'utilizzo del runner di Spring per eseguire i test.
+// Indica l'utilizzo del runner di Spring per eseguire i test.
 @SpringBootTest
-// viene utilizzato per indicare che si desidera caricare l'applicazione Spring Boot durante l'esecuzione dei test.
+// Indica che si desidera caricare l'applicazione Spring Boot durante l'esecuzione dei test.
 public class UserTest {
 
     @Autowired
+    // Inietta il bean UserRepository all'interno della classe di test.
     private UserRepository userRepository;
 
     @Test
+    // Metodo di test per trovare un utente per ID
     public void testFindUserById() {
         Long idUser = 1L;
+        // Cerca un utente per ID
         Optional<User> optionalUser = userRepository.findById(idUser);
+        // Ottiene l'utente se presente, altrimenti restituisce null
         User user = optionalUser.orElse(null);
+        // Verifica se l'ID dell'utente corrisponde all'ID atteso
         assertEquals(idUser, user != null ? user.getIdUser() : null);
     }
 
-    //Test per trovare altri idUser
+    // Ipotetico metodo di test per trovare altri utenti per ID
     /*@Test
     public void testFindUsersById() {
         Collection<Long> collectionUser = Arrays.asList(1L, 2L, 3L);
@@ -45,3 +49,5 @@ public class UserTest {
     }*/
 
 }
+
+//Test jUnit da rivedere e approfondire l'argomento (ripassare il tutto).

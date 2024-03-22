@@ -1,46 +1,25 @@
-package com.example.CloneGamestop.DTO;
+package com.example.CloneGamestop.DTO; // Pacchetto che contiene la classe ProductDTO
 
-import com.example.CloneGamestop.Model.Product;
+import com.example.CloneGamestop.Model.Product; // Importa la classe Product dal pacchetto Model
+import lombok.Data; // Importa l'annotazione @Data di Lombok
 
-public class ProductDTO {
+@Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
+public class ProductDTO { // Dichiarazione della classe ProductDTO
 
-    private String name;
-    private String description;
-    private int price;
+    private String name; // Campo per il nome del prodotto
+    private String description; // Campo per la descrizione del prodotto
+    private int price; // Campo per il prezzo del prodotto
 
-    public ProductDTO() {
+    // Costruttore vuoto
+    //public ProductDTO() {
+    //}
 
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
+    // Metodo statico per creare un oggetto ProductDTO a partire da un oggetto Product
     public static ProductDTO fromProduct(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setName(product.getName());
-        productDTO.setDescription(product.getDescription());
-        productDTO.setPrice(product.getPrice());
-        return productDTO;
+        ProductDTO productDTO = new ProductDTO(); // Crea un nuovo oggetto ProductDTO
+        productDTO.setName(product.getName()); // Imposta il nome del prodotto
+        productDTO.setDescription(product.getDescription()); // Imposta la descrizione del prodotto
+        productDTO.setPrice(product.getPrice()); // Imposta il prezzo del prodotto
+        return productDTO; // Restituisce l'oggetto ProductDTO creato
     }
 }

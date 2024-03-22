@@ -1,48 +1,23 @@
-package com.example.CloneGamestop.DTO;
+package com.example.CloneGamestop.DTO; // Package che contiene la classe CartDTO
 
-import com.example.CloneGamestop.Model.Cart;
+import com.example.CloneGamestop.Model.Cart; // Importa la classe Cart dal package Model
+import lombok.Data; // Importa l'annotazione @Data di Lombok
 
-import java.time.LocalDateTime;
+import java.time.LocalDateTime; // Importa la classe LocalDateTime
 
-public class CartDTO {
+@Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
+public class CartDTO { // Dichiarazione della classe CartDTO
 
-    private Long idCart;
-    private String shippingAddress;
-    private LocalDateTime dateOfAddition;
+    private Long idCart; // Campo per l'ID del carrello
+    private String shippingAddress; // Campo per l'indirizzo di spedizione
+    private LocalDateTime dateOfAddition; // Campo per la data di aggiunta
 
-    public CartDTO() {
-
-    }
-
-    public Long getIdCart() {
-        return idCart;
-    }
-
-    public void setIdCart(Long idCart) {
-        this.idCart = idCart;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public LocalDateTime getDateOfAddition() {
-        return dateOfAddition;
-    }
-
-    public void setDateOfAddition(LocalDateTime dateOfAddition) {
-        this.dateOfAddition = dateOfAddition;
-    }
-
+    // Metodo statico per creare un oggetto CartDTO a partire da un oggetto Cart
     public static CartDTO fromCart(Cart cart) {
-        CartDTO cartDTO = new CartDTO();
-        cartDTO.setIdCart(cart.getIdCart());
-        cartDTO.setDateOfAddition(cart.getDateOfAddition());
-        cartDTO.setShippingAddress(cart.getShippingAddress());
-        return cartDTO;
+        CartDTO cartDTO = new CartDTO(); // Crea un nuovo oggetto CartDTO
+        cartDTO.setIdCart(cart.getIdCart()); // Imposta l'ID del carrello
+        cartDTO.setDateOfAddition(cart.getDateOfAddition()); // Imposta la data di aggiunta
+        cartDTO.setShippingAddress(cart.getShippingAddress()); // Imposta l'indirizzo di spedizione
+        return cartDTO; // Restituisce l'oggetto CartDTO creato
     }
 }

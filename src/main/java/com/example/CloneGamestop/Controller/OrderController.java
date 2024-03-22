@@ -12,28 +12,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+// Indica che questa classe è un controller REST e restituisce risposte JSON
 public class OrderController {
 
-    @Autowired //Utilizza il servizio OrderService per eseguire operazioni relative agli ordini.
-    private OrderService orderService;
+    @Autowired
+    private OrderService orderService; // Utilizza il servizio OrderService per eseguire operazioni relative agli ordini
 
-    @PostMapping("/order-create") //crea un ordine
+    @PostMapping("/order-create")
+    // Metodo per gestire la creazione di un ordine
     public ResponseEntity Order(@RequestBody Order order) {
-        try { //Il metodo order() del servizio salva l'ordine. Se riuscito, ritorna HTTP 200 OK con l'ordine creato.
+        try {
+            // Il metodo orderCreate() del servizio salva l'ordine. Se riuscito, ritorna HTTP 200 OK con l'ordine creato
             return ResponseEntity.ok(orderService.orderCreate(order));
-        }catch (Exception e) { //In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
+        } catch (Exception e) {
+            // In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-    @PostMapping("/order/{idUser}") //crea un ordine
+
+    @PostMapping("/order/{idUser}")
+    // Metodo per creare un ordine per un determinato ID utente
     public ResponseEntity orderByUserId(@PathVariable Long idUser, @RequestBody Order order) {
-        try {// Restituisce una risposta HTTP 200 dopo aver creato un ordine per l'ID utente specificato utilizzando OrderService.
+        try {
+            // Crea un ordine per l'ID utente specificato utilizzando OrderService
             return ResponseEntity.ok(orderService.orderCreateByUserId(idUser, order));
-        }catch (Exception e) { // se non funzionante manda un messaggio di errore Http 400
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
     @GetMapping(value = "/api/order/{idOrder}")
+    // Ottiene un ordine tramite ID e restituisce un DTO dell'ordine
     public ResponseEntity<OrderDTO> getUserById(@PathVariable Long idOrder) {
         Order order = orderService.viewOrderById(idOrder);
 
@@ -46,33 +56,40 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/view-all-order")
+    // Ottiene tutti gli ordini e restituisce una lista di DTO degli ordini
     public ResponseEntity<List<OrderDTO>> viewAllOrder() {
         List<Order> orderList = orderService.viewAllOrders();
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (Order order : orderList) {
-            orderDTOList.add(OrderDTO.fromOrder(order));
+            orderDTOList.add(OrderDTO.fromOrder(order)); // Converti ogni ordine in DTO e aggiungilo alla lista
         }
-        return ResponseEntity.ok(orderDTOList);
+        return ResponseEntity.ok(orderDTOList); // Restituisce la lista di DTO degli ordini
     }
 
     @PutMapping(value = "/update-order/{idOrder}")
+    // Metodo per modificare un ordine esistente
     public ResponseEntity modifyOrder(@PathVariable Long idOrder, @RequestBody Order order) {
         try {
+            // Modifica l'ordine e restituisce una risposta OK
             return ResponseEntity.ok(orderService.updateOrder(idOrder, order));
-        }catch (Exception e) {
+        } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @DeleteMapping(value = "/delete-order/{idOrder}")
+    // Metodo per eliminare un ordine esistente
     public ResponseEntity<String> deleteOrderById(@PathVariable Long idOrder) {
         try {
+            // Elimina l'ordine utilizzando OrderService
             orderService.deleteOrderByIdOrder(idOrder);
-            return ResponseEntity.ok("Product deleted successfully");
+            return ResponseEntity.ok("Ordine eliminato con successo");
         } catch (Exception e) {
+            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
 }

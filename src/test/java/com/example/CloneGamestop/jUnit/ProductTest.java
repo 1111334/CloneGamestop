@@ -13,20 +13,25 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-//La classe è annotata con @RunWith(SpringRunner.class) che indica l'utilizzo del runner di Spring per eseguire i test.
+// Indica l'utilizzo del runner di Spring per eseguire i test.
 @SpringBootTest
-// viene utilizzato per indicare che si desidera caricare l'applicazione Spring Boot durante l'esecuzione dei test.
+// Indica che si desidera caricare l'applicazione Spring Boot durante l'esecuzione dei test.
 public class ProductTest {
 
     @Autowired
-    //viene utilizzato per iniettare il bean ProductRepository all'interno della classe di test.
+    // Inietta il bean ProductRepository all'interno della classe di test.
     private ProductRepository productRepository;
 
     @Test
+    // Metodo di test
     public void testFindByProductId() {
         Long idProduct = 1L;
+        // Cerca un prodotto per ID
         Optional<Product> optionalProduct = productRepository.findById(idProduct);
+        // Ottiene il prodotto se presente, altrimenti restituisce null
         Product product = optionalProduct.orElse(null);
+        // Verifica se l'ID del prodotto corrisponde all'ID atteso
         assertEquals(idProduct, product != null ? product.getIdProduct() : null);
     }
 }
+//Test jUnit da rivedere e approfondire l'argomento (ripassare il tutto).
