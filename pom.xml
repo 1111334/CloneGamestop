@@ -88,6 +88,11 @@
             <artifactId>java-jwt</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!-- Configurazione per la build del progetto -->
@@ -138,4 +143,3 @@
             <version>0.12.5</version>
             <scope>runtime</scope>
         </dependency>-->
-
