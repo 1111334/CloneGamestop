@@ -1,4 +1,0 @@
-problema con richieste CRUD errore 404 "status": 404,
-                                           "error": "Not Found",
-                                           "trace": "org.springframework.web.servlet.resource.NoResourceFoundException: No static resource view-all-user.\r\n\tat
-risolto cambiando nome directory --> //@ComponentScan("com.example.CloneGamestop.Config")
