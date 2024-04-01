@@ -58,7 +58,7 @@ public class LoginService {
     // Metodo statico per generare un JSON Web Token (JWT) per l'utente
     public static final String JWT_SECRET = "d573f999-ed10-4f67-ad43-4cd2c1d08cc5";
 
-    // Genera il JWT con l'id dell'utente
+    // Genera il JWT con l'id dell'utenteckout
     public static String getJWT(User user) throws UnsupportedEncodingException {
         return JWT.create().withClaim("id", user.getIdUser()).sign(Algorithm.HMAC512(JWT_SECRET));
     }
