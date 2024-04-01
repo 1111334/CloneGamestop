@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Metodo per trovare uno user tramite il codice di attivazione
     User findByActivationCode(String activationCode);
+    User findByPasswordResetCode(String PasswordResetCode);
+
 }
