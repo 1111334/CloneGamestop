@@ -13,6 +13,7 @@ import com.example.CloneGamestop.Repository.UserRepository;
 import com.example.CloneGamestop.notification.services.MailNotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,6 +33,8 @@ public class UserService {
     private CartRepository cartRepository;
     @Autowired
     private MailNotificationService mailNotificationService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Metodo per la registrazione di un nuovo utente
     public User signup(UserDTO userDTO) throws Exception {
@@ -41,7 +44,7 @@ public class UserService {
         user.setUsername(userDTO.getUsername());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setActive(false);
         user.setActivationCode(UUID.randomUUID().toString());
         mailNotificationService.sendActivationService(user);
@@ -53,7 +56,7 @@ public class UserService {
         User user =  userRepository.findByActivationCode(signupActivationDTO.getActivationCode());
         if (user == null) throw new Exception("User not found");
         user.setActive(true);
-        user.setActivationCode("");
+        user.setActivationCode(null);
         return userRepository.save(user);
     }
 

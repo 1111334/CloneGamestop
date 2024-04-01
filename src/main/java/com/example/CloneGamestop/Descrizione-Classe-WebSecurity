@@ -1,0 +1,33 @@
+
+Descrizione accurata del codice sorgente:
+
+File: WebSecurity.java
+
+Pacchetto:
+
+com.example.CloneGamestop: Indica la collocazione del codice all'interno del progetto.
+Importazioni:
+
+com.zaxxer.hikari.HikariDataSource: Libreria per la connessione efficiente al database MySQL.
+Importazioni Spring: Annotazioni e classi per la configurazione di Spring Security e la gestione dei bean.
+javax.sql.DataSource: Interfaccia per l'accesso a fonti di dati.
+Annotazioni:
+
+@EnableWebSecurity: Abilita la configurazione di sicurezza web in Spring.
+@Configuration: Indica che la classe contiene configurazioni per Spring.
+Bean:
+
+passwordEncoder(): Restituisce un'istanza del BCryptPasswordEncoder per criptare le password prima di salvarle nel database, a garanzia di un'archiviazione sicura.
+apiFilterChain(): Crea un filtro di sicurezza per le API sotto il percorso "/auth/" con le seguenti caratteristiche:
+Accesso consentito a tutte le richieste senza autenticazione (potrebbe richiedere modifiche in base alle esigenze reali).
+Protezione CSRF ignorata per le richieste API (necessario per l'autenticazione HTTP Basic).
+Autenticazione HTTP Basic attivata per richiedere le credenziali nell'header di autorizzazione.
+dataSource(): Crea un bean DataSource per la connessione al database MySQL, specificando i dati per l'accesso:
+URL del database.
+Nome utente (configurare in modo corretto).
+Password (sostituire con un metodo di memorizzazione sicuro, evitando il salvataggio in chiaro nel codice).
+Note:
+
+Il codice implementa due catene di filtri di sicurezza: una per API sotto "/auth/" e una generica non ancora definita.
+Revisionare la configurazione autenticazione per soddisfare i requisiti specifici del progetto.
+Evitare di memorizzare password in chiaro nel codice sorgente.

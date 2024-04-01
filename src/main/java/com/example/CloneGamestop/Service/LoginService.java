@@ -7,6 +7,7 @@ import com.example.CloneGamestop.DTO.LoginRTO;
 import com.example.CloneGamestop.Model.User;
 import com.example.CloneGamestop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -18,6 +19,8 @@ public class LoginService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Metodo per gestire il login
     public LoginRTO login(LoginDTO loginDTO) throws UnsupportedEncodingException {
@@ -47,8 +50,9 @@ public class LoginService {
     }
 
     // Metodo statico per verificare se l'utente può effettuare il login confrontando le password
-    public static boolean canUserLogin(User user, String password) {
-        return user.getPassword().equals(password);
+    public boolean canUserLogin(User user, String password) {
+        //return user.getPassword().equals(password);
+       return passwordEncoder.matches(password, user.getPassword());
     }
 
     // Metodo statico per generare un JSON Web Token (JWT) per l'utente

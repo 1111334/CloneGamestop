@@ -18,13 +18,17 @@ public class PasswordRestoreController {
 
     @PostMapping("/request")
     // Metodo per gestire la richiesta di ripristino della password
-    public void passwordRequest(@RequestBody RequestPasswordDTO requestPasswordDTO) {
-        passwordService.request(requestPasswordDTO); // Invia l'email per la richiesta di ripristino della password
+    public void passwordRequest(@RequestBody RequestPasswordDTO requestPasswordDTO) throws Exception {
+        try {
+            passwordService.request(requestPasswordDTO); // Invia l'email per la richiesta di ripristino della password
+        }catch (Exception e){
+
+        }
     }
 
     @PostMapping("/restore")
     // Metodo per gestire il ripristino effettivo della password
-    public void passwordRestore(@RequestBody RestorePasswordDTO restorePasswordDTO) {
+    public void passwordRestore(@RequestBody RestorePasswordDTO restorePasswordDTO) throws Exception {
         passwordService.restore(restorePasswordDTO); // Effettua il cambio effettivo della password
     }
 }

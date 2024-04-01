@@ -1,0 +1,33 @@
+problema con richieste CRUD errore 404 "status": 404,
+                                           "error": "Not Found",
+                                           "trace": "org.springframework.web.servlet.resource.NoResourceFoundException: No static resource view-all-user.\r\n\tat
+risolto cambiando nome directory --> //@ComponentScan("com.example.CloneGamestop.Config")
+////////////////////////////////////////////////////////////////////////////////////////////////////7
+<!--PROBLEMA DI ACCESSO DATABASE MYSQL RISOLTO TRAMITE:
+
+   @Bean
+    @Order(1)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/auth/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll()
+                )
+                .csrf(csrf -> csrf                                  // Enable CSRF protection
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/auth/**")) // Ignore CSRF for /auth/**
+                )
+                .httpBasic(withDefaults());
+        return http.build();
+
+    }
+<!--Codice da rivedere-->
+    @Bean
+    public DataSource dataSource() {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/gamestop_clone_db");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Maicoldevelhope12.");
+        return dataSource;
+    }
+
+
