@@ -33,8 +33,12 @@ public class User { // Dichiarazione della classe User
     private String email;
 
     private boolean isActive; // Campo che indica se l'utente è attivo
+
     @Column(length = 36)
     private String activationCode; // Codice di attivazione dell'utente
+
+    @Column(length = 36)
+    private String passwordResetCode;
 
     private LocalDateTime jwtCreatedOn; // Data e ora di creazione del JWT
 
