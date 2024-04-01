@@ -1,0 +1,107 @@
+<!--CODICE DEPRECATO-->
+protected void configure(HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests() //deprecated
+            .anyRequest().authenticated()
+        .and() //deprecated
+        .httpBasic();
+}
+<!--/////////-->
+
+<!--CODICE AGGIORNATO-->
+@Bean // Bean SecurityFilterChain per le richieste API
+    @Order(1)
+    protected SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+        // Applica il filtro solo alle richieste che iniziano con "/auth/"
+        http
+                .securityMatcher("/auth/**")
+                // Consente l'accesso a qualsiasi richiesta sotto "/auth/" senza autenticazione
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll()
+                )
+                // Ignora la protezione CSRF per le richieste sotto "/auth/"
+                .csrf(csrf -> csrf                                  // Enable CSRF protection
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/auth/**")) // Ignore CSRF for /auth/**
+                )
+                // Abilita l'autenticazione HTTP Basic per questo filtro
+                .httpBasic(withDefaults());
+        // Costruisce e restituisce il SecurityFilterChain
+        return http.build();
+    }
+<!--/////////////////-->
+
+<!--Dotenv-->
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     Da riutilizzare in futuro
+     @Bean // Bean DataSource per la connessione al database MySQL
+     public DataSource dataSource() {
+         HikariDataSource dataSource = new HikariDataSource();
+         // Utilizza le variabili d'ambiente per impostare l'URL, il nome utente e la password
+         dataSource.setJdbcUrl(System.getenv("DB_URL"));
+         dataSource.setUsername(System.getenv("DB_USERNAME"));
+         dataSource.setPassword(System.getenv("DB_PASSWORD"));
+         return dataSource;
+     }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+<!--Codice da analizzare meglio in futuro-->
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     @Bean
+     @Order(2)
+     public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
+         return http
+                 .csrf(csrf -> csrf                                  // Enable CSRF protection
+                         .ignoringRequestMatchers(new AntPathRequestMatcher("/auth/**")) // Ignore CSRF for /auth/signup
+                 )
+                 .authorizeHttpRequests((authorize) -> authorize
+                         .anyRequest().permitAll()           // Require authentication for all other requests
+                 )
+                 .build();
+     }
+
+     @Bean
+     @Order(2) // Assicura che questa catena di filtri abbia priorità inferiore (default)
+     public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
+         http.authorizeHttpRequests(authorize -> authorize
+                         .anyRequest().authenticated() // Richiedere l'autenticazione per tutte le altre richieste
+                 )
+                 .csrf(csrf -> csrf
+                         .ignoringRequestMatchers(
+                                 "/auth/**"// Ignora la protezione CSRF per tutti i metodi di richiesta nella directory "/auth"
+                         )
+                 )
+                 // Aggiungi ulteriori configurazioni di sicurezza, se necessario (ad esempio, login basato su form)
+                 .build();
+         return http.build();
+     }
+     protected void configure(HttpSecurity http) throws Exception {
+           http.authorizeHttpRequests(authorize -> authorize
+                   .requestMatchers(String.valueOf(PathRequest.toStaticResources().atCommonLocations())).permitAll()
+                   .anyRequest().authenticated()
+           );
+
+           http.csrf(csrf -> csrf.disable());
+           http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+       }*/
+      codice da inserire in progetto diverso da quello presente
+       protected void configure(HttpSecurity http) throws Exception {
+           http.authorizeHttpRequests(authorize -> authorize
+                   .requestMatchers(String.valueOf(PathRequest.toStaticResources().atCommonLocations())).permitAll()
+                   .requestMatchers("/h2-console/**").permitAll()
+                   .anyRequest().authenticated()
+           );
+
+           http.csrf(csrf -> csrf.disable());
+           http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+       }*/
+     @Bean
+     @Order(1)
+     protected void configure(HttpSecurity http) throws Exception {
+         http
+                 .securityMatcher("/auth/**")
+                 .authorizeHttpRequests(authorize -> authorize
+                         .anyRequest().authenticated()
+                 )
+                 .httpBasic(withDefaults());
+         //return http.build();
+     }
