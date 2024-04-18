@@ -16,6 +16,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @Configuration
 public class WebSecurity {
+
+    //@Autowired
+    //private JwtTokenFilter jwtTokenFilter;
+
     @Bean // Bean per la codifica delle password con l'algoritmo BCrypt
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -39,7 +43,10 @@ public class WebSecurity {
                 .httpBasic(withDefaults());
         // Costruisce e restituisce il SecurityFilterChain
         return http.build();
+
+        //http.addFilterBefore(
+        //        jwtTokenFilter,
+        //        UsernamePasswordAuthenticationFilter.class
+        //);;
     }
-
-
 }
