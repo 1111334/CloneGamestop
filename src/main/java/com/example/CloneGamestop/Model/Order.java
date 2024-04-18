@@ -1,16 +1,20 @@
 package com.example.CloneGamestop.Model; // Pacchetto che contiene la classe Order
 
-import com.fasterxml.jackson.annotation.JsonFormat; // Importa l'annotazione JsonFormat da Jackson
-import jakarta.persistence.*; // Importa le annotazioni di JPA
-import lombok.Data; // Importa l'annotazione @Data di Lombok
-import lombok.NoArgsConstructor; // Importa l'annotazione @NoArgsConstructor di Lombok
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime; // Importa la classe LocalDateTime
-import java.util.HashSet; // Importa la classe HashSet
-import java.util.Set; // Importa la classe Set
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
-@NoArgsConstructor // Annotazione Lombok per generare un costruttore vuoto
+//@NoArgsConstructor // Annotazione Lombok per generare un costruttore vuoto
+// genera automaticamente un costruttore che accetta tutti i campi della classe Order
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity // Indica che questa classe è un'entità JPA
 @Table(name = "order_table") // Specifica il nome della tabella nel database
 public class Order { // Dichiarazione della classe Order

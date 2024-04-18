@@ -1,15 +1,21 @@
 package com.example.CloneGamestop.DTO; // Package che contiene la classe CartDTO
 
-import com.example.CloneGamestop.Model.Cart; // Importa la classe Cart dal package Model
-import lombok.Data; // Importa l'annotazione @Data di Lombok
+import com.example.CloneGamestop.Model.Cart;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
-import java.time.LocalDateTime; // Importa la classe LocalDateTime
+import java.time.LocalDateTime;
 
 @Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
 public class CartDTO { // Dichiarazione della classe CartDTO
 
     private Long idCart; // Campo per l'ID del carrello
+
+    @NotBlank(message = "L'indirizzo di spedizione non può essere vuoto")
     private String shippingAddress; // Campo per l'indirizzo di spedizione
+
+    @NotNull(message = "La data di aggiunta non può essere nulla")
     private LocalDateTime dateOfAddition; // Campo per la data di aggiunta
 
     // Metodo statico per creare un oggetto CartDTO a partire da un oggetto Cart

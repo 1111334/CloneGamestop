@@ -21,39 +21,23 @@ public class ProductController {
     @PostMapping("/create-product")
     // Metodo per gestire la creazione di un prodotto
     public ResponseEntity createProduct(@RequestBody Product product) {
-        try {
-            // Il metodo productCreate() del servizio salva il prodotto. Se riuscito, ritorna HTTP 200 OK con il prodotto creato
-            return ResponseEntity.ok(productService.productCreate(product));
-        } catch (Exception e) {
-            // In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        // Il metodo productCreate() del servizio salva il prodotto. Se riuscito, ritorna HTTP 200 OK con il prodotto creato
+        return ResponseEntity.ok(productService.productCreate(product));
     }
 
     @PostMapping("create-product/{idOrder}/{idUser}")
     // Metodo per creare un prodotto per un determinato ID ordine e ID utente
     public ResponseEntity ProductByOrderIdAndByUserId(@PathVariable Long idOrder,
-                                                      @PathVariable Long idUser,
-                                                      @RequestBody Product product) {
-        try {
+                                                      @PathVariable Long idUser,@RequestBody Product product) {
             // Crea un prodotto per l'ID ordine e l'ID utente specificati utilizzando ProductService
             return ResponseEntity.ok(productService.productCreateByOrderIdAndByUserId(idOrder, idUser, product));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 
     @PostMapping("/add-to-cart/{idProduct}/{idCart}")
     // Metodo per aggiungere un prodotto a un carrello specificato per ID
     public ResponseEntity addProductToCartById(@PathVariable Long idProduct, @PathVariable Long idCart) {
-        try {
             // Aggiunge il prodotto al carrello specificato utilizzando ProductService
             return ResponseEntity.ok(productService.addProductToCart(idProduct, idCart));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 
     @GetMapping(value = "/api/product/{idProduct}")
@@ -84,26 +68,16 @@ public class ProductController {
 
     @PutMapping(value = "/update-product/{idProduct}")
     // Metodo per modificare un prodotto esistente
-    public ResponseEntity modifyProductById(@PathVariable Long idProduct, @RequestBody Product product) {
-        try {
+    public ResponseEntity modifyProductById(@PathVariable Long idProduct, @RequestBody Product product) throws Exception {
             // Modifica il prodotto e restituisce una risposta OK
             return ResponseEntity.ok(productService.updatedProduct(idProduct, product));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 
     @DeleteMapping(value = "/delete-product/{idProduct}")
     // Metodo per eliminare un prodotto esistente
     public ResponseEntity<String> deleteProductById(@PathVariable Long idProduct) {
-        try {
             // Elimina il prodotto utilizzando ProductService
             productService.deleteProductByIdProduct(idProduct);
             return ResponseEntity.ok("Prodotto eliminato con successo");
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 }

@@ -12,6 +12,7 @@ import com.example.CloneGamestop.Repository.ProductRepository;
 import com.example.CloneGamestop.Repository.UserRepository;
 import com.example.CloneGamestop.notification.services.MailNotificationService;
 import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,26 @@ public class UserService {
         newUser.setPassword(userDTO.getPassword());
 
         return userRepository.save(newUser);
+    }
+
+    //@Transactional
+    public User addUserToProduct(Long idUser, Long idProduct) {
+        Optional<User> optionalUser = userRepository.findById(idUser);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            Optional<Product> optionalProduct = productRepository.findById(idProduct);
+            if (optionalProduct.isPresent()) {
+                Product product = optionalProduct.get();
+                user.getProducts().add(product);
+
+                return userRepository.save(user);
+            } else {
+                throw new RuntimeException("User not found with ID: " + idUser);
+            }
+        } else {
+            throw new RuntimeException("Product not found with ID: " + idProduct);
+        }
     }
 
     // Metodo per creare un utente associandolo a un prodotto, un ordine e un carrello tramite i loro ID

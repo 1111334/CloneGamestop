@@ -26,4 +26,6 @@ public class LoginController {
         // Altrimenti, restituisce i risultati del login
         return loginRTO;
     }
+
+
 }
