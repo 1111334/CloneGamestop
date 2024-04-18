@@ -1,17 +1,21 @@
 package com.example.CloneGamestop.Model; // Pacchetto che contiene la classe User
 
-import com.example.CloneGamestop.TestController.Role; // Importa la classe Role
-import jakarta.persistence.*; // Importa le annotazioni di JPA
-import lombok.Data; // Importa l'annotazione @Data di Lombok
-import lombok.NoArgsConstructor; // Importa l'annotazione @NoArgsConstructor di Lombok
+import com.example.CloneGamestop.TestController.Role;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime; // Importa la classe LocalDateTime
-import java.util.HashSet; // Importa la classe HashSet
-import java.util.Set; // Importa la classe Set
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 // Annotation di Lombok per generare automaticamente getter, setter, equals, hashCode, toString
 @Data
 // Annotation di Lombok per generare un costruttore vuoto
+//@NoArgsConstructor
+// genera automaticamente un costruttore che accetta tutti i campi della classe User
+@AllArgsConstructor
 @NoArgsConstructor
 // Annotation per definire questa classe come entità persistente
 @Entity
@@ -29,7 +33,7 @@ public class User { // Dichiarazione della classe User
     private String username;
     private String surname;
     private String password;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
     private boolean isActive; // Campo che indica se l'utente è attivo
@@ -67,4 +71,5 @@ public class User { // Dichiarazione della classe User
     // Relazione molti a molti con i ruoli dell'utente
     @ManyToMany
     private Set<Role> roles = new HashSet<>(); // Campo per il set di ruoli associati all'utente
+
 }

@@ -1,16 +1,20 @@
 package com.example.CloneGamestop.Model; // Pacchetto che contiene la classe Cart
 
-import com.fasterxml.jackson.annotation.JsonFormat; // Importa l'annotazione JsonFormat da Jackson
-import com.fasterxml.jackson.annotation.JsonManagedReference; // Importa l'annotazione JsonManagedReference da Jackson
-import jakarta.persistence.*; // Importa le annotazioni di JPA
-import lombok.Data; // Importa l'annotazione @Data di Lombok
-import lombok.NoArgsConstructor; // Importa l'annotazione @NoArgsConstructor di Lombok
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime; // Importa la classe LocalDateTime
-import java.util.List; // Importa la classe List
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
-@NoArgsConstructor // Annotazione Lombok per generare un costruttore vuoto
+//@NoArgsConstructor // Annotazione Lombok per generare un costruttore vuoto
+// genera automaticamente un costruttore che accetta tutti i campi della classe Cart
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity // Indica che questa classe è un'entità JPA
 @Table(name = "cart") // Specifica il nome della tabella nel database
 public class Cart { // Dichiarazione della classe Cart
