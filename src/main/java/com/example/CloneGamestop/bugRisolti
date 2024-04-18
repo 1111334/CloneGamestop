@@ -29,5 +29,118 @@ risolto cambiando nome directory --> //@ComponentScan("com.example.CloneGamestop
         dataSource.setPassword("Maicoldevelhope12.");
         return dataSource;
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   <!--BUG DA RISOLVERE-->
+   //bug riguardo la richiesta signup funzionante su postman ma da risolvere su intellij
+   2024-04-04T23:21:35.738+02:00 ERROR 22596 --- [nio-8080-exec-2] c.e.C.n.s.MailNotificationService        : Errore durante l'invio dell'email di attivazione a qgk82078@fosiq.com
+   org.springframework.mail.MailSendException: Mail server connection failed. Failed messages: jakarta.mail.MessagingException: Could not convert socket to TLS;
+
+   Caused by: jakarta.mail.MessagingException: Could not convert socket to TLS
+   	at org.eclipse.angus.mail.smtp.SMTPTransport.startTLS(SMTPTransport.java:2173) ~[jakarta.mail-2.0.3.jar:na]
+   	at org.eclipse.angus.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:741) ~[jakarta.mail-2.0.3.jar:na]
+   	at jakarta.mail.Service.connect(Service.java:345) ~[jakarta.mail-2.0.3.jar:na]
+   	at org.springframework.mail.javamail.JavaMailSenderImpl.connectTransport(JavaMailSenderImpl.java:480) ~[spring-context-support-6.1.5.jar:6.1.5]
+   	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:399) ~[spring-context-support-6.1.5.jar:6.1.5]
+   	... 112 common frames omitted
+
+   	Caused by: javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+       	at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:131) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:378) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:316) ~[na:na]
+       	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1357) ~[na:na]
+       	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1232) ~[na:na]
+       	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1175) ~[na:na]
+       	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:396) ~[na:na]
+       	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:480) ~[na:na]
+       	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:458) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.dispatch(TransportContext.java:201) ~[na:na]
+       	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:172) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1506) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1421) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:455) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:426) ~[na:na]
+       	at org.eclipse.angus.mail.util.SocketFetcher.configureSSLSocket(SocketFetcher.java:662) ~[jakarta.mail-2.0.3.jar:na]
+       	at org.eclipse.angus.mail.util.SocketFetcher.startTLS(SocketFetcher.java:563) ~[jakarta.mail-2.0.3.jar:na]
+       	at org.eclipse.angus.mail.smtp.SMTPTransport.startTLS(SMTPTransport.java:2168) ~[jakarta.mail-2.0.3.jar:na]
+       	... 116 common frames omitted
+
+       	Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+           	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:439) ~[na:na]
+           	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:306) ~[na:na]
+           	at java.base/sun.security.validator.Validator.validate(Validator.java:264) ~[na:na]
+           	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:231) ~[na:na]
+           	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:132) ~[na:na]
+           	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1341) ~[na:na]
+           	... 130 common frames omitted
+
+           	Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+               	at java.base/sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:146) ~[na:na]
+               	at java.base/sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:127) ~[na:na]
+               	at java.base/java.security.cert.CertPathBuilder.build(CertPathBuilder.java:297) ~[na:na]
+               	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:434) ~[na:na]
+               	... 135 common frames omitted
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   //bug riguardo la richiesta Restore password funzionante su postman ma da risolvere qui
+
+   2024-04-04T23:26:43.016+02:00 ERROR 22596 --- [nio-8080-exec-7] c.e.C.n.s.MailNotificationService        : Errore durante l'invio dell'email di attivazione a qgk82078@fosiq.com
+   org.springframework.mail.MailSendException: Mail server connection failed. Failed messages: jakarta.mail.MessagingException: Could not convert socket to TLS;
+
+   Caused by: jakarta.mail.MessagingException: Could not convert socket to TLS
+   	at org.eclipse.angus.mail.smtp.SMTPTransport.startTLS(SMTPTransport.java:2173) ~[jakarta.mail-2.0.3.jar:na]
+   	at org.eclipse.angus.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:741) ~[jakarta.mail-2.0.3.jar:na]
+   	at jakarta.mail.Service.connect(Service.java:345) ~[jakarta.mail-2.0.3.jar:na]
+   	at org.springframework.mail.javamail.JavaMailSenderImpl.connectTransport(JavaMailSenderImpl.java:480) ~[spring-context-support-6.1.5.jar:6.1.5]
+   	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:399) ~[spring-context-support-6.1.5.jar:6.1.5]
+   	... 105 common frames omitted
+
+   	Caused by: javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+       	at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:131) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:378) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:316) ~[na:na]
+       	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1357) ~[na:na]
+       	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1232) ~[na:na]
+       	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1175) ~[na:na]
+       	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:396) ~[na:na]
+       	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:480) ~[na:na]
+       	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:458) ~[na:na]
+       	at java.base/sun.security.ssl.TransportContext.dispatch(TransportContext.java:201) ~[na:na]
+       	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:172) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1506) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1421) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:455) ~[na:na]
+       	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:426) ~[na:na]
+       	at org.eclipse.angus.mail.util.SocketFetcher.configureSSLSocket(SocketFetcher.java:662) ~[jakarta.mail-2.0.3.jar:na]
+       	at org.eclipse.angus.mail.util.SocketFetcher.startTLS(SocketFetcher.java:563) ~[jakarta.mail-2.0.3.jar:na]
+       	at org.eclipse.angus.mail.smtp.SMTPTransport.startTLS(SMTPTransport.java:2168) ~[jakarta.mail-2.0.3.jar:na]
+       	... 109 common frames omitted
+
+       	Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+           	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:439) ~[na:na]
+           	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:306) ~[na:na]
+           	at java.base/sun.security.validator.Validator.validate(Validator.java:264) ~[na:na]
+           	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:231) ~[na:na]
+           	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:132) ~[na:na]
+           	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1341) ~[na:na]
+           	... 123 common frames omitted
+
+           	Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+               	at java.base/sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:146) ~[na:na]
+               	at java.base/sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:127) ~[na:na]
+               	at java.base/java.security.cert.CertPathBuilder.build(CertPathBuilder.java:297) ~[na:na]
+               	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:434) ~[na:na]
+               	... 128 common frames omitted
 
 
+
+/*#Abilita il supporto STARTTLS per la connessione sicura al server SMTP (necessario per Gmail).
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+        #Abilita la modalita debug per le email inviate.
+spring.mail.properties.mail.debug=true
+
+        #Specifica il server SMTP di fiducia (nel caso di Gmail, di solito non e necessario poiche viene gestito internamente).
+spring.mail.properties.java.mail.smtp.ssl.trust=smtp.gmail.com*/
