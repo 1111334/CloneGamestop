@@ -1,6 +1,7 @@
 package com.example.CloneGamestop.DTO; // Pacchetto che contiene la classe OrderDTO
 
 import com.example.CloneGamestop.Model.Order; // Importa la classe Order dal pacchetto Model
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data; // Importa l'annotazione @Data di Lombok
 
 @Data // Annotazione Lombok per generare automaticamente i getter, setter, toString, equals e hashCode
@@ -8,6 +9,8 @@ public class OrderDTO { // Dichiarazione della classe OrderDTO
 
     private Long idOrder; // Campo per l'ID dell'ordine
     private boolean allActionsCompleted; // Campo per indicare se tutte le azioni sono state completate
+
+    @NotBlank(message = "Lo stato dell'ordine non può essere vuoto")
     private String statusOrder; // Campo per lo stato dell'ordine
 
     // Costruttore vuoto
