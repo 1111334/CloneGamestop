@@ -21,25 +21,15 @@ public class OrderController {
     @PostMapping("/order-create")
     // Metodo per gestire la creazione di un ordine
     public ResponseEntity Order(@RequestBody Order order) {
-        try {
-            // Il metodo orderCreate() del servizio salva l'ordine. Se riuscito, ritorna HTTP 200 OK con l'ordine creato
-            return ResponseEntity.ok(orderService.orderCreate(order));
-        } catch (Exception e) {
-            // In caso di eccezione, ritorna HTTP 400 e il messaggio dell'eccezione come corpo
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        // Il metodo orderCreate() del servizio salva l'ordine. Se riuscito, ritorna HTTP 200 OK con l'ordine creato
+        return ResponseEntity.ok(orderService.orderCreate(order));
     }
 
     @PostMapping("/order/{idUser}")
     // Metodo per creare un ordine per un determinato ID utente
     public ResponseEntity orderByUserId(@PathVariable Long idUser, @RequestBody Order order) {
-        try {
-            // Crea un ordine per l'ID utente specificato utilizzando OrderService
-            return ResponseEntity.ok(orderService.orderCreateByUserId(idUser, order));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        // Crea un ordine per l'ID utente specificato utilizzando OrderService
+        return ResponseEntity.ok(orderService.orderCreateByUserId(idUser, order));
     }
 
     @GetMapping(value = "/api/order/{idOrder}")
@@ -70,26 +60,17 @@ public class OrderController {
 
     @PutMapping(value = "/update-order/{idOrder}")
     // Metodo per modificare un ordine esistente
-    public ResponseEntity modifyOrder(@PathVariable Long idOrder, @RequestBody Order order) {
-        try {
-            // Modifica l'ordine e restituisce una risposta OK
-            return ResponseEntity.ok(orderService.updateOrder(idOrder, order));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity modifyOrder(@PathVariable Long idOrder, @RequestBody Order order) throws Exception {
+        // Modifica l'ordine e restituisce una risposta OK
+        return ResponseEntity.ok(orderService.updateOrder(idOrder, order));
     }
 
     @DeleteMapping(value = "/delete-order/{idOrder}")
     // Metodo per eliminare un ordine esistente
     public ResponseEntity<String> deleteOrderById(@PathVariable Long idOrder) {
-        try {
-            // Elimina l'ordine utilizzando OrderService
-            orderService.deleteOrderByIdOrder(idOrder);
-            return ResponseEntity.ok("Ordine eliminato con successo");
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+
+        // Elimina l'ordine utilizzando OrderService
+        orderService.deleteOrderByIdOrder(idOrder);
+        return ResponseEntity.ok("Ordine eliminato con successo");
     }
 }

@@ -24,11 +24,7 @@ public class UserController {
     public void access(@RequestBody UserDTO userDTO) throws Exception {
         userService.signup(userDTO); //PROBLEMI CON SIGNUP CAUSA PROBLEMI IN INTELLIJ NONOSTANTE l'endpoint vada a buon fine
     }
-//2024-04-01T02:47:44.431+02:00 ERROR 17516 --- [nio-8080-exec-2] c.e.C.n.s.MailNotificationService        : Errore durante l'invio dell'email di attivazione a zaz93277@fosiq.com
-    //Caused by: jakarta.mail.MessagingException: Could not convert socket to TLS
-    //Caused by: javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-    //Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-    //Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+
     @PostMapping("/activation")
 // Metodo per gestire l'attivazione dell'account utente
     public void activation(@RequestBody SignupActivationDTO signupActivationDTO) throws Exception {
@@ -37,14 +33,14 @@ public class UserController {
 
     @PostMapping(value = "/create-user")
     // Metodo per creare un nuovo utente
-    public ResponseEntity createUser(@RequestBody UserDTO userDTO) {
-        try {
-            // Crea un nuovo utente e restituisce una risposta OK con i dati dell'utente creato
-            return ResponseEntity.ok(userService.users(userDTO));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity createUser(@RequestBody UserDTO userDTO) throws Exception {
+        // Crea un nuovo utente e restituisce una risposta OK con i dati dell'utente creato
+        return ResponseEntity.ok(userService.users(userDTO));
+    }
+
+    @PostMapping("/addUserToProduct/{idUser}/{idProduct}")
+    public ResponseEntity addIdUserToProductId(@PathVariable Long idUser, @PathVariable Long idProduct) {
+        return ResponseEntity.ok(userService.addUserToProduct(idUser, idProduct));
     }
 
     @PostMapping("/createUserAssociate/{idProduct}/{idOrder}/{idCart}")
@@ -53,7 +49,6 @@ public class UserController {
                                                          @PathVariable Long idProduct,
                                                          @PathVariable Long idOrder,
                                                          @PathVariable Long idCart) {
-
         User createdUser = userService.createUserWithProductOrderCart(user, idProduct, idOrder, idCart);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
@@ -86,27 +81,16 @@ public class UserController {
 
     @PutMapping(value = "/update-user/{idUser}")
     // Metodo per aggiornare un utente esistente
-    public ResponseEntity updatedUser(@PathVariable Long idUser, @RequestBody User user) {
-        try {
-            // Aggiorna l'utente e restituisce una risposta OK
-            return ResponseEntity.ok(userService.updateUser(idUser, user));
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 400 Bad Request e il messaggio dell'eccezione
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity updatedUser(@PathVariable Long idUser, @RequestBody User user) throws Exception {
+        // Aggiorna l'utente e restituisce una risposta OK
+        return ResponseEntity.ok(userService.updateUser(idUser, user));
     }
 
     @DeleteMapping(value = "/delete-user/{idUser}")
     // Metodo per eliminare un utente esistente
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long idUser) {
-        try {
-            // Elimina l'utente e restituisce una risposta OK con i dati dell'utente eliminato
-            UserDTO deletedUser = userService.deleteUser(idUser);
-            return ResponseEntity.ok(deletedUser);
-        } catch (Exception e) {
-            // In caso di errore, ritorna una risposta con codice HTTP 404 Not Found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long idUser) throws Exception {
+        // Elimina l'utente e restituisce una risposta OK con i dati dell'utente eliminato
+        return ResponseEntity.ok(userService.deleteUser(idUser));
     }
 }
 
