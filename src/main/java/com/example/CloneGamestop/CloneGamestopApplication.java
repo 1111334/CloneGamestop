@@ -38,4 +38,5 @@ public class CloneGamestopApplication {
         //}
 
     }
+    //dare un'occhiata al metodo signup e vedere come gestire l'email errore runner
 }
